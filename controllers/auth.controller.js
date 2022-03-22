@@ -86,52 +86,45 @@ module.exports.logout = (req, res) => {
 module.exports.deleteUser = async (req, res) => {
   const token = req.cookies.jwt;
   const userId = jwt.verify(token, process.env.TOKEN).id;
-  let isAdmin = false
+  let isAdmin = false;
 
-  db.query(`SELECT user_admin FROM users WHERE id_user = ${db.escape(userId)}`, (err, data) => {
-    if (data[0].user_admin == 1) isAdmin = true
+  db.query(
+    `SELECT user_admin FROM users WHERE id_user = ${db.escape(userId)}`,
+    (err, data) => {
+      if (data[0].user_admin == 1) isAdmin = true;
 
-    db.query(
-      `SELECT post_img FROM posts WHERE post_user = ${db.escape(req.params.id)};
-      SELECT user_picture FROM users WHERE id_user = ${db.escape(req.params.id)};`,
-      async (err, data) => {
-        if (err) res.status(500).json(err.sqlMessage);
-        const imgs = data[1].concat(data[0]);
-        const imgUrls = [];
-        await imgs.map((img) => {
-          if (img.user_picture) imgUrls.push(img.user_picture);
-          if (img.post_img) imgUrls.push(img.post_img);
-        });
-        imgUrls.map((url) => {
-          const img = url.split("/")[5];
-          const type = url.split("/")[4];
-          if (img !== "default.jpg") {
-            fs.unlink(`./images/${type}/${img}`, (err) => {
-              if (err) console.log(err);
-            });
-          }
-        });
-        
-        db.query(
-          `
-      DELETE FROM likes WHERE like_user = ${db.escape(req.params.id)};
-      DELETE FROM comments WHERE comment_user = ${db.escape(req.params.id)};
-      DELETE FROM posts WHERE post_user = ${db.escape(req.params.id)};
-      DELETE FROM users WHERE id_user = ${db.escape(req.params.id)};
-      `,
-          (err, data) => {
-            if (err) res.status(500).json(err.sqlMessage);
-            else {
-              if (!isAdmin) {
-                res.cookie("jwt", "", { maxAge: 1 });
-              }
-              res.status(200).send("Suppression effectuée !");
+      db.query(
+      `SELECT post_img AS imgUrl FROM posts WHERE id_user = ${db.escape(req.params.id)} 
+      UNION
+      SELECT user_picture AS imgUrl FROM users WHERE id_user = ${db.escape(req.params.id)} AND user_picture NOT LIKE '%/default.jpg';`,
+        async (err, data) => {
+          if (err) res.status(500).json(err.sqlMessage);
+          await data.map((img) => {
+            const file = img.imgUrl.split("/")[5];
+            const folder = img.imgUrl.split("/")[4];
+            console.log(folder, file);
+            if (img !== "default.jpg") {
+              fs.unlink(`./images/${folder}/${file}`, (err) => {
+                if (err) console.log(err);
+                db.query(
+                  `DELETE FROM users WHERE id_user = ${db.escape(req.params.id)};`,
+                  (err, data) => {
+                    if (err) res.status(500).json(err.sqlMessage);
+                    else {
+                      if (!isAdmin) {
+                        res.cookie("jwt", "", { maxAge: 1 });
+                      }
+                      res.status(200).send("Suppression effectuée !");
+                    }
+                  }
+                );
+              });
             }
-          }
-        );
-      }
-    );
-  });
+          });
+        }
+      );
+    }
+  );
 };
 
 module.exports.editUser = (req, res) => {
