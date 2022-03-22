@@ -38,7 +38,7 @@ db.connect(function (err) {
 });
 
 
-app.use("/api/auth", authRoutes);
+app.use("/api/user", authRoutes);
 app.use("/api/post", postRoutes);
 app.use("/images/user", express.static("images/user"));
 app.use("/images/post", express.static("images/post"));
