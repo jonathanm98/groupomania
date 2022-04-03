@@ -6,7 +6,7 @@ module.exports.getAllPosts = (req, res) => {
   db.query(
     `SELECT * FROM posts ORDER BY 'id_post' DESC LIMIT ${2},20`,
     function (err, data) {
-      if (data.length === 0) res.status(200).send("Il n'y à aucun posts !");
+      if (data.length === 0) return res.status(200).send(null);
       if (err) res.status(500).json(err.sqlMessage);
       else {
         data.map((post) => {
@@ -25,7 +25,7 @@ module.exports.getAllPosts = (req, res) => {
               });
               db.query(`SELECT * FROM likes`, (err, data) => {
                 if (err) res.status(500).json(err.sqlMessage);
-                posts.map((post) => {
+                  posts.map((post) => {
                   const likes = JSON.parse(JSON.stringify(data)).filter(
                     (element) =>
                       element.id_post === post.id_post &&

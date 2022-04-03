@@ -28,7 +28,9 @@ router.get("/get/:id", authEditUser, authController.getOneUser)
 
 router.delete("/delete/:id", authEditUser, authController.deleteUser);
 
-router.put("/edit/:id", authEditUser, upload.single("file"), authController.editUser);
+router.put("/edit/picture/:id", authEditUser, upload.single("file"), authController.editUserImg);
+
+router.put("/edit/bio/:id", authEditUser, authController.editUserBio);
 
 router.get("/auth", auth)
 

@@ -69,8 +69,14 @@ module.exports.login = async (req, res) => {
             maxAge: 1 * 60 * 60 * 1000,
           });
           res.status(200).json({ message: "Authentification réussie" });
-        } else res.status(400).json({ credentials: "Email ou mot de passe incorrect !" });
-      } else res.status(400).json({ credentials: "Email ou mot de passe incorrect !" });
+        } else
+          res
+            .status(400)
+            .json({ credentials: "Email ou mot de passe incorrect !" });
+      } else
+        res
+          .status(400)
+          .json({ credentials: "Email ou mot de passe incorrect !" });
     }
   );
 };
@@ -87,10 +93,12 @@ module.exports.getOneUser = (req, res) => {
   const userId = jwt.verify(token, process.env.TOKEN).id;
   db.query(
     `SELECT 
+    id_user AS userId, 
     user_firstName AS firstName,
     user_lastName AS lastName,
     user_email AS email,
     user_picture AS pictureUrl,
+    user_bio AS bio,
     user_registration AS createdAt
     FROM users WHERE id_user = ${db.escape(userId)}`,
     (err, data) => {
@@ -149,7 +157,7 @@ module.exports.deleteUser = async (req, res) => {
   );
 };
 
-module.exports.editUser = (req, res) => {
+module.exports.editUserImg = (req, res) => {
   db.query(
     `SELECT user_picture FROM users WHERE id_user = ${db.escape(
       req.params.id
@@ -158,7 +166,7 @@ module.exports.editUser = (req, res) => {
       if (err) res.status(500).json(err.sqlMessage);
       else if (data[0]) {
         oldImg = data[0].user_picture.split("/")[5];
-        let img = `http://localhost/images/user/${req.file.filename}`;
+        let img = `http://localhost:4242/images/user/${req.file.filename}`;
         if (oldImg !== "default.jpg") {
           fs.unlink(`./images/user/${oldImg}`, (err) => {
             if (err) console.log(err);
@@ -174,6 +182,18 @@ module.exports.editUser = (req, res) => {
           }
         );
       }
+    }
+  );
+};
+
+module.exports.editUserBio = (req, res) => {
+  db.query(
+    `UPDATE users SET user_bio = ${db.escape(
+      req.body.bio
+    )} where id_user = ${db.escape(req.params.id)};`,
+    (err, data) => {
+      if (err) console.log(err);
+      else res.status(201).send("Photo de profil mise à jour");
     }
   );
 };
