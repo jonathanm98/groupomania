@@ -2,9 +2,11 @@ const db = require("../config/db");
 
 module.exports.getAllPosts = (req, res) => {
   const posts = [];
+  limitItems = 2
   db.query(
-    `SELECT * FROM posts ORDER BY 'post_createdAt' ASC`,
+    `SELECT * FROM posts ORDER BY 'id_post' DESC LIMIT ${2},20`,
     function (err, data) {
+      if (data.length === 0) res.status(200).send("Il n'y à aucun posts !");
       if (err) res.status(500).json(err.sqlMessage);
       else {
         data.map((post) => {
@@ -22,6 +24,7 @@ module.exports.getAllPosts = (req, res) => {
                 post.comments = comments;
               });
               db.query(`SELECT * FROM likes`, (err, data) => {
+                if (err) res.status(500).json(err.sqlMessage);
                 posts.map((post) => {
                   const likes = JSON.parse(JSON.stringify(data)).filter(
                     (element) =>
@@ -34,15 +37,15 @@ module.exports.getAllPosts = (req, res) => {
                       element.like_value === 0
                   );
 
-                  const usersLiked = []
-                  const usersDisliked = []
+                  const usersLiked = [];
+                  const usersDisliked = [];
 
                   likes.map((like) => {
-                    usersLiked.push(like.id_user)
-                  })
+                    usersLiked.push(like.id_user);
+                  });
                   dislikes.map((dislike) => {
-                    usersDisliked.push(dislike.id_user)
-                  })
+                    usersDisliked.push(dislike.id_user);
+                  });
                   post.likes = likes.length;
                   post.dislikes = dislikes.length;
                   post.usersLiked = usersLiked;
@@ -67,12 +70,11 @@ module.exports.createPost = (req, res) => {
   VALUES
   (
     ${db.escape(req.body.posterId)},
-    ${db.escape(req.body.message)},
-    ${db.escape(img)}
+    ${db.escape(req.body.content)},
+    ${img}
   )
   `,
       (err, data) => {
-        console.log(data);
         if (err) res.status(500).json(err.sqlMessage);
         else res.status(201).send("Post créer");
       }
@@ -84,11 +86,10 @@ module.exports.createPost = (req, res) => {
   VALUES
   (
     ${db.escape(req.body.posterId)},
-    ${db.escape(req.body.message)}
+    ${db.escape(req.body.content)}
   )
   `,
       (err, data) => {
-        console.log(data);
         if (err) res.status(500).json(err.sqlMessage);
         else res.status(201).send("Post créer");
       }
@@ -97,30 +98,93 @@ module.exports.createPost = (req, res) => {
 };
 
 module.exports.deletePost = (req, res) => {
-  db.query(`DELETE FROM posts WHERE id_post = ${db.escape(req.params.id)}`, (err, data) => {
-    if (err) res.status(500).json(err.sqlMessage);
-    else res.status(200).send("Post supprimé");
-  })
+  db.query(
+    `DELETE FROM posts WHERE id_post = ${db.escape(req.params.id)}`,
+    (err, data) => {
+      if (err) res.status(500).json(err.sqlMessage);
+      else res.status(200).send("Post supprimé");
+    }
+  );
 };
 
 module.exports.createComment = (req, res) => {
-  console.log(req.body);
-  db.query(`INSERT INTO comments (id_post, id_user, comment_content)
-  VALUES
-  (
-    ${db.escape(req.body.postId)}, 
-    ${db.escape(req.body.commenterId)}, 
-    ${db.escape(req.body.content)}
-    );`, (err, data) => {
-    if (err) res.status(500).json(err.sqlMessage);
-    else res.status(201).send("Commentaire ajouté !")
-  })
-}
-
-module.exports.deleteComment = (req, res) => {
-  db.query(`DELETE FROM comments WHERE id_comment = ${db.escape(req.params.id)}`, (err, data) => {
-    if (err) res.status(500).json(err.sqlMessage);
-    else res.status(200).send("Commentaire supprimé");
-  })
+  db.query(
+    `SELECT * FROM posts WHERE id_post = ${req.params.id}`,
+    (err, data) => {
+      if (data.length === 0) res.status(401).send("La cible n'existe pas !");
+      else {
+        db.query(
+          `INSERT INTO comments (id_post, id_user, comment_content)
+        VALUES
+        (
+          ${db.escape(req.body.postId)}, 
+          ${db.escape(req.body.commenterId)}, 
+          ${db.escape(req.body.content)}
+        );`,
+          (err, data) => {
+            if (err) res.status(500).json(err.sqlMessage);
+            else res.status(201).send("Commentaire ajouté !");
+          }
+        );
+      }
+    }
+  );
 };
 
+module.exports.deleteComment = (req, res) => {
+  db.query(
+    `SELECT * FROM posts WHERE id_post = ${req.params.id}`,
+    (err, data) => {
+      if (data.length === 0) res.status(401).send("La cible n'existe pas !");
+      else {
+        db.query(
+          `DELETE FROM comments WHERE id_comment = ${db.escape(req.params.id)}`,
+          (err, data) => {
+            if (err) res.status(500).json(err.sqlMessage);
+            else res.status(200).send("Commentaire supprimé");
+          }
+        );
+      }
+    }
+  );
+};
+
+module.exports.like = (req, res) => {
+  db.query(
+    `SELECT * FROM posts WHERE id_post = ${req.params.id}`,
+    (err, data) => {
+      if (err) res.status(500).json(err.sqlMessage);
+      if (data.length === 0) res.status(401).send("La cible n'existe pas !");
+      else {
+        db.query(
+          `SELECT * FROM likes WHERE id_user = ${db.escape(req.body.userId)}`,
+          async (err, data) => {
+            if (data[0]) {
+              for (const result of data) {
+                if (result.id_user === parseInt(req.body.userId)) {
+                  db.query(`DELETE FROM likes WHERE id_post = ${req.params.id} AND id_user = ${req.body.userId}`, (err, data) => {
+                    if (err) res.status(500).json(err.sqlMessage);
+                    else res.status(201).send("Retrait");
+                  })
+                }
+              }
+            } else {
+              db.query(
+                `INSERT INTO likes (id_post, id_user, like_value)
+              VALUES
+              (
+                ${db.escape(req.params.id)},
+                ${db.escape(req.body.userId)},
+                ${db.escape(req.body.likeValue)}
+                );`,
+                (err, data) => {
+                  if (err) res.status(500).json(err.sqlMessage);
+                  else res.status(201).send("Ajout");
+                }
+              );
+            }
+          });
+      }
+    }
+  );
+};

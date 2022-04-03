@@ -1,0 +1,78 @@
+$pink: #ba4d55;
+$lightpink: #ffd7d7;
+$blue: #091f43;
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: 'Lato', sans-serif;
+  color: $blue;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+*::selection {
+  background: $blue;
+  color: $pink;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.active-btn {
+  max-width: fit-content;
+  border-radius: 10px;
+  background-color: $pink;
+  color: $lightpink;
+}
+.btn {
+  font-weight: bold;
+  background-color: $pink;
+  color: $lightpink;
+  cursor: pointer;
+}
+.error-msg {
+  color: red;
+  text-decoration: underline;
+  font-weight: bold;
+  margin: auto;
+  max-width: 100%;
+}
+
+.sucess-msg {
+  color: lightgreen;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+h1 {
+  text-align: center;
+  font-weight: bold;
+  font-size: 2.4em;
+}

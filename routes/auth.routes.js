@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const authController = require("../controllers/auth.controller");
-const { authDeleteUser } = require("../middlewares/auth");
+const { authEditUser, auth } = require("../middlewares/auth");
 const multer = require("multer");
 // Fonction de multer qui envoie l'image au dossier front et la renomme de façon a eviter les conflit de fichiers
 const mimetypes = {
@@ -24,8 +24,12 @@ router.post("/login", authController.login);
 router.post("/register", authController.register);
 router.get("/logout", authController.logout);
 
-router.delete("/delete/:id", authDeleteUser, authController.deleteUser);
+router.get("/get/:id", authEditUser, authController.getOneUser)
 
-router.put("/edit/:id", authDeleteUser, upload.single("file"), authController.editUser);
+router.delete("/delete/:id", authEditUser, authController.deleteUser);
+
+router.put("/edit/:id", authEditUser, upload.single("file"), authController.editUser);
+
+router.get("/auth", auth)
 
 module.exports = router;

@@ -1,0 +1,23 @@
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  padding: 20px 0;
+  background-color: $blue;
+  .profil-card {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    background-color: $lightpink;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 1em;
+    right: 40px;
+    font-size: 1.1em;
+    img {
+      width: 50px;
+      border-radius: 100%;
+      margin-right: 10px;
+    }
+  }
+}

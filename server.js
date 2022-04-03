@@ -16,7 +16,7 @@ const app = express();
 const httpsServer = https.createServer(credentials, app);
 
 const corsOptions = {
-  // origin: process.env.CLIENT_URL,
+  origin: process.env.CLIENT_URL,
   credentials: true,
   allowedHeaders: ["sessionId", "Content-Type"],
   exposedHeaders: ["sessionId"],
@@ -43,7 +43,7 @@ app.use("/api/post", postRoutes);
 app.use("/images/user", express.static("images/user"));
 app.use("/images/post", express.static("images/post"));
 
-httpsServer.listen(process.env.PORT, () =>
+app.listen(process.env.PORT, () =>
   console.log("Serveur démarré sur le port " + process.env.PORT)
 );
 

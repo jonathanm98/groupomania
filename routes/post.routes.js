@@ -24,11 +24,12 @@ const upload = multer({ fileSize: 2097152, storage: storage });
 router.get("/", auth.authView, postController.getAllPosts);
 
 router.post("/create/post", auth.addContent, upload.single("file"), postController.createPost);
-
 router.delete("/delete/post/:id", auth.authDeleteContent, postController.deletePost);
 
 router.post("/create/comment", auth.addContent, postController.createComment);
-
 router.delete("/delete/comment/:id", auth.authDeleteContent, postController.deleteComment);
+
+router.post("/like/:id", auth.authLike, postController.like)
+router.post("/dislike/:id", auth.authLike, postController.like)
 
 module.exports = router;

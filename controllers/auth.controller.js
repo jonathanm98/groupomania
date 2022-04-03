@@ -20,12 +20,12 @@ module.exports.register = async (req, res) => {
   const lastName = req.body.lastName.trim();
   switch (false) {
     case isEmail(email):
-      res.status(400).send("Email incorrect");
+      res.status(400).json({ email: "Email incorrect" });
       break;
     case req.body.password.length >= 8:
-      res
-        .status(400)
-        .send("Votre mot de passe doit contenir au moins 8 caractères");
+      res.status(400).json({
+        password: "Votre mot de passe doit contenir au moins 8 caractères",
+      });
       break;
     default:
       db.query(
@@ -40,7 +40,9 @@ module.exports.register = async (req, res) => {
         `,
         function (err, data) {
           if (err)
-            res.status(400).send("Un utilisateur existe déjà avec cet email !");
+            res
+              .status(400)
+              .json({ email: "Un utilisateur existe déjà avec cet email !" });
           else
             res.status(201).send("Utilisateur créer veuillez vous connecter");
         }
@@ -62,16 +64,13 @@ module.exports.login = async (req, res) => {
         );
         if (isLogged) {
           const token = createToken(user.id_user);
-          res.cookie("jwt", token, {
+          await res.cookie("jwt", token, {
             httpOnly: true,
             maxAge: 1 * 60 * 60 * 1000,
           });
-          res.status(200).send("Authentification réussie");
-        } else res.status(400).send("Mot de passe incorrect !");
-      } else
-        res
-          .status(400)
-          .send("Cet utilisateur n'existe pas dans la base de donnée");
+          res.status(200).json({ message: "Authentification réussie" });
+        } else res.status(400).json({ credentials: "Email ou mot de passe incorrect !" });
+      } else res.status(400).json({ credentials: "Email ou mot de passe incorrect !" });
     }
   );
 };
@@ -81,6 +80,23 @@ module.exports.logout = (req, res) => {
     maxAge: 1,
   });
   res.status(200).send("Vous êtes déconnecté");
+};
+
+module.exports.getOneUser = (req, res) => {
+  const token = req.cookies.jwt;
+  const userId = jwt.verify(token, process.env.TOKEN).id;
+  db.query(
+    `SELECT 
+    user_firstName AS firstName,
+    user_lastName AS lastName,
+    user_email AS email,
+    user_picture AS pictureUrl,
+    user_registration AS createdAt
+    FROM users WHERE id_user = ${db.escape(userId)}`,
+    (err, data) => {
+      res.status(200).json(data[0]);
+    }
+  );
 };
 
 module.exports.deleteUser = async (req, res) => {
@@ -94,9 +110,13 @@ module.exports.deleteUser = async (req, res) => {
       if (data[0].user_admin == 1) isAdmin = true;
 
       db.query(
-      `SELECT post_img AS imgUrl FROM posts WHERE id_user = ${db.escape(req.params.id)} 
+        `SELECT post_img AS imgUrl FROM posts WHERE id_user = ${db.escape(
+          req.params.id
+        )} 
       UNION
-      SELECT user_picture AS imgUrl FROM users WHERE id_user = ${db.escape(req.params.id)} AND user_picture NOT LIKE '%/default.jpg';`,
+      SELECT user_picture AS imgUrl FROM users WHERE id_user = ${db.escape(
+        req.params.id
+      )} AND user_picture NOT LIKE '%/default.jpg';`,
         async (err, data) => {
           if (err) res.status(500).json(err.sqlMessage);
           await data.map((img) => {
@@ -107,7 +127,9 @@ module.exports.deleteUser = async (req, res) => {
               fs.unlink(`./images/${folder}/${file}`, (err) => {
                 if (err) console.log(err);
                 db.query(
-                  `DELETE FROM users WHERE id_user = ${db.escape(req.params.id)};`,
+                  `DELETE FROM users WHERE id_user = ${db.escape(
+                    req.params.id
+                  )};`,
                   (err, data) => {
                     if (err) res.status(500).json(err.sqlMessage);
                     else {
