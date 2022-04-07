@@ -1,7 +1,7 @@
 const express = require("express");
 const https = require("https");
 const cookieParser = require('cookie-parser');
-const authRoutes = require("./routes/auth.routes")
+const usersRoutes = require("./routes/users.routes")
 const postRoutes = require("./routes/post.routes")
 require("dotenv").config({ path: "./config/.env" });
 const db = require('./config/db')
@@ -38,7 +38,7 @@ db.connect(function (err) {
 });
 
 
-app.use("/api/user", authRoutes);
+app.use("/api/user", usersRoutes);
 app.use("/api/post", postRoutes);
 app.use("/images/user", express.static("images/user"));
 app.use("/images/post", express.static("images/post"));
