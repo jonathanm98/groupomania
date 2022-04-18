@@ -4,7 +4,7 @@ import { UidContext } from "./components/AppContext";
 import Routers from "./Routers";
 import { useDispatch } from "react-redux";
 import { getUser } from "./actions/user.actions";
-import { getPosts } from "./actions/posts.actions";
+import { getUsers } from "./actions/users.actions";
 
 function App() {
   const [uid, setUid] = useState(null);
@@ -26,7 +26,7 @@ function App() {
 
     if (uid) {
       dispatch(getUser(uid));
-      dispatch(getPosts())
+      dispatch(getUsers())
     }
   }, [uid]);
 
