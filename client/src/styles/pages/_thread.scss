@@ -1,0 +1,294 @@
+.thread-container {
+  .empty-msg {
+    text-align: center;
+    font-size: 2em;
+  }
+  h1 {
+    margin-bottom: 40px;
+  }
+  .card-container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    padding: 10px;
+    padding-bottom: 80px;
+    .loading {
+      width: 50px;
+    }
+    .picture img {
+      width: 61px;
+      height: 61px;
+      object-fit: cover;
+      margin-right: 40px;
+      border-radius: 1em;
+      border: 1px solid $blue;
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      .post {
+        img {
+          margin-top: 20px;
+          max-width: 90%;
+          object-fit: cover;
+        }
+      }
+      .user {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+      .buttons {
+        position: absolute;
+        bottom: 0;
+        left: 5%;
+        display: flex;
+        justify-content: space-around;
+        width: 90%;
+        margin: auto;
+        border-top: 1px solid $pink;
+        padding: 10px;
+        margin-top: 20px;
+        .post-button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: none;
+          border-radius: 1em;
+          padding: 5px;
+          font-size: 1.1em;
+          background-color: white;
+          transition: all 0.1s ease-in-out;
+          transform-origin: center;
+          cursor: pointer;
+          span {
+            display: inline;
+          }
+          img {
+            margin-right: 20px;
+            width: 20px;
+            height: 20px;
+          }
+          p {
+            width: fit-content;
+            white-space: nowrap;
+          }
+          p:not(.button-text) {
+            margin-left: 5px;
+          }
+          &:hover {
+            transform: scale(1.01);
+          }
+        }
+      }
+    }
+  }
+  .main-container {
+    border: 1px solid $blue;
+    box-shadow: 0 0 0 1px $pink;
+    width: 40%;
+    margin: auto;
+    border-radius: 1em;
+    margin-bottom: 30px;
+    .comments-container {
+      width: 90%;
+      margin: auto;
+      padding-top: 10px;
+      border-top: 1px solid $pink;
+      .comment-card {
+        display: flex;
+        justify-content: space-around;
+        position: relative;
+        width: 100%;
+        margin: auto;
+        border-radius: 0em 1em 1em 1em;
+        border: 2px solid $lightpink;
+        padding: 10px;
+        margin-bottom: 15px;
+        &.client {
+          border-radius: 1em 1em 0em 1em;
+          background-color: $lightpink;
+        }
+        .img-container img {
+          object-fit: cover;
+          border-radius: 1em;
+          border: 1px solid $blue;
+          width: 60px;
+          height: 60px;
+        }
+        .content-container {
+          display: flex;
+          flex-direction: column;
+          width: 80%;
+          .comment-header {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin: auto;
+          }
+          .content {
+            display: flex;
+            justify-content: space-between;
+            .delete-btn {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              background-color: initial;
+              border: none;
+              cursor: pointer;
+              transition: 0.2s;
+              img {
+                width: 14px;
+                margin-right: 5px;
+              }
+              &:hover {
+                transform: scale(1.01);
+              }
+            }
+          }
+        }
+      }
+      .comment-form {
+        text-align: right;
+        margin-bottom: 20px;
+        input[type="text"] {
+          width: 100%;
+          height: 60px;
+          border-radius: 1em 1em 0em 1em;
+          border: 2px solid $lightpink;
+          padding: 10px;
+          margin-bottom: 5px;
+          font-size: 0.9em;
+          outline: none;
+          &:focus {
+            border: 2px solid $pink;
+          }
+        }
+        input[type="submit"] {
+          border-radius: 1em 0em 1em 1em;
+        }
+      }
+    }
+  }
+  .post-form-container {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 50px;
+    .post-form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      border: 1px solid $blue;
+      box-shadow: 0 0 0 1px $pink;
+      padding: 10px;
+      border-radius: 1em;
+      .card-container {
+        background-color: $lightpink;
+        border-radius: 1em;
+        margin-bottom: 20px;
+      }
+      textarea {
+        border: 1px solid $lightpink;
+        border-radius: 1em;
+        outline: none;
+        padding: 5px;
+        margin-bottom: 15px;
+        min-height: 50px;
+        &:focus {
+          border: 1px solid $pink;
+        }
+      }
+      .post-form-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        img {
+          width: 20px;
+        }
+        button {
+          margin-right: 20px;
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 1399px) {
+    .post-form-container {
+      width: 80%;
+    }
+    .main-container {
+      width: 80%;
+    }
+  }
+  @media screen and (max-width: 710px) {
+    .post-form-container {
+      width: 98%;
+    }
+    .main-container {
+      width: 98%;
+      .card-container {
+        .picture {
+          img {
+            width: 50px;
+            height: 50px;
+            margin-right: 20px;
+          }
+        }
+        h2 {
+          font-size: 1.2em;
+        }
+      }
+      .content {
+        .user {
+          p {
+            font-size: 0.9em;
+            flex-wrap: nowrap;
+          }
+        }
+        .post {
+          img {
+            max-width: 98%;
+          }
+        }
+      }
+      .post-button {
+        p.button-text {
+          display: none;
+        }
+        img {
+          margin-right: 0 !important;
+        }
+      }
+      .comments-container {
+        .comment-card {
+          .img-container img {
+            width: 50px;
+            height: 50px;
+          }
+          .content-container {
+            .comment-header {
+              h3 {
+                font-size: 1.1em;
+              }
+              p {
+                font-size: 0.9em;
+              }
+            }
+            .delete-btn {
+              p {
+                display: none;
+              }
+              img {
+                transform: scale(1.2);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
