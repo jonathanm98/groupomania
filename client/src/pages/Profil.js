@@ -10,17 +10,16 @@ import Header from "../components/Header";
 import { dateParser } from "../Utils";
 
 const Profil = () => {
-  
   const uid = useContext(UidContext);
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.userReducer);
-  document.title = `Groupomania - Profil de ${userData.firstName}`
+  document.title = `Groupomania - Profil de ${userData.firstName}`;
   const [bio, setBio] = useState("");
   const [updateForm, setUpdateForm] = useState(false);
-  
+
   const [deleteModal, setDeleteModal] = useState(false);
   Modal.setAppElement("#root");
-  
+
   const [file, setFile] = useState();
 
   const handlePicture = (e) => {
@@ -64,7 +63,7 @@ const Profil = () => {
   };
   return (
     <div className="profil-container">
-      {!uid || !userData && <Navigate to="/" />}
+      {!uid || (!userData && <Navigate to="/" />)}
       <Header />
       <h1>Profil de {`${userData.firstName} ${userData.lastName}`}</h1>
       <div className="bloc-profil">
@@ -140,7 +139,7 @@ const Profil = () => {
           Annuler
         </button>
         <button className="delete" onClick={() => handleDelete()}>
-          Supprimer le comtpe
+          Supprimer le compte
         </button>
       </Modal>
     </div>

@@ -26,7 +26,8 @@ router.post("/register", usersController.register);
 router.get("/logout", usersController.logout);
 
 router.get("/get/all", authView, usersController.getAllUsers)
-router.get("/get/:id", authEditUser, usersController.getOneUser)
+router.get("/get/", authEditUser, usersController.getCurrentUser)
+router.get("/get/:id", authView, usersController.getOneUser)
 
 router.delete("/delete/:id", authEditUser, usersController.deleteUser);
 

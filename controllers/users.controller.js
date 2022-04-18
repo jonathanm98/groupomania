@@ -89,7 +89,7 @@ module.exports.logout = async (req, res) => {
   res.status(200).send("Vous êtes déconnecté");
 };
 
-module.exports.getOneUser = (req, res) => {
+module.exports.getCurrentUser = (req, res) => {
   const token = req.cookies.jwt;
   const userId = jwt.verify(token, process.env.TOKEN).id;
   db.query(
@@ -118,6 +118,23 @@ module.exports.getAllUsers = (req, res) => {
   FROM users`,
     (err, data) => {
       res.status(200).json(data);
+    }
+  );
+};
+
+module.exports.getOneUser = (req, res) => {
+  db.query(
+    `SELECT 
+    id_user AS userId, 
+    user_firstName AS firstName,
+    user_lastName AS lastName,
+    user_picture AS pictureUrl,
+    user_bio AS bio,
+    user_registration AS createdAt,
+    user_admin AS admin
+    FROM users WHERE id_user = ${db.escape(req.params.id)}`,
+    (err, data) => {
+      res.status(200).json(data[0]);
     }
   );
 };

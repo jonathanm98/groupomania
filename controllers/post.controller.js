@@ -61,7 +61,6 @@ module.exports.getAllPosts = (req, res) => {
 };
 
 module.exports.refreshPosts = (req, res) => {
-  console.log("hey");
   const posts = [];
   db.query(
     `SELECT 

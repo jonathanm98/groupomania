@@ -111,9 +111,17 @@
     }
   }
   @media screen and (max-width: 600px) {
-    .info-bloc {
-      .button-container {
-        width: 60%;
+    .bloc-profil {
+      padding: 20px 0;
+      .info-bloc {
+        .button-container {
+          width: 60%;
+        }
+        .bio-container {
+          width: 90%;
+          .bio-update button {
+          }
+        }
       }
     }
   }

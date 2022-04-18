@@ -12,6 +12,7 @@ const FormPost = ({ count }) => {
   }, [userData]);
 
   const [file, setFile] = useState(null);
+  const [video, setVideo] = useState(null);
   const [post, setPost] = useState("");
   const [error, setError] = useState("");
   const [previewPicture, setPreviewPicture] = useState("");

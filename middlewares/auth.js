@@ -119,11 +119,6 @@ module.exports.authDeleteContent = async (req, res, next) => {
         )}`,
         (err, data) => {
           const type = req.url.split("/")[2];
-          console.log(
-            `SELECT id_user FROM ${type}s WHERE id_${type} = ${db.escape(
-              req.params.id
-            )}`
-          );
           if (data[0] && data[0].user_admin === 1) next();
           else {
             db.query(
