@@ -1,8 +1,12 @@
-DROP DATABASE IF EXISTS `groupomania`;
+DROP DATABASE IF EXISTS `groupomania2`;
 
-CREATE DATABASE `groupomania`;
+CREATE DATABASE `groupomania2`;
 
-USE `groupomania`;
+USE `groupomania2`;
+
+CREATE USER IF NOT EXISTS 'projet7_limited'@'%' IDENTIFIED BY 'projet7';
+
+GRANT CREATE, DELETE, INSERT, SELECT ON groupomania2.* TO 'projet7_limited'@'%';
 
 CREATE TABLE `users` (
   `id_user` int NOT NULL AUTO_INCREMENT,

@@ -6,7 +6,7 @@ const con = mysql.createConnection({
   user: "projet7_limited",
   password: process.env.DB_PASSWORD,
   database: "groupomania",
-  multipleStatements: true
+  multipleStatements: true,
 });
 
 module.exports = con;
