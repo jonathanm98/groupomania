@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { isEmail } from "validator";
 
 const RegisterForm = () => {
+  document.title = "Groupomania - Inscription"
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");

@@ -3,6 +3,7 @@ import axios from "axios";
 import { isEmail } from "validator";
 
 const LoginForm = () => {
+  document.title = "Groupomania - Connexion"
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,11 +15,11 @@ const LoginForm = () => {
     e.preventDefault();
     const validateInputs = () => {
       if (!isEmail(email)) {
-        setEmailError("Adresse email incorrecte");
+        setEmailError("Email ou mot de passe incorrect");
         setValidForm(false);
       } else setValidForm(true);
       if (password.length < 8) {
-        setPasswordError("Mot de passe incorrect");
+        setPasswordError("Email ou mot de passe incorrect");
         setValidForm(false);
       } else setValidForm(true);
     };
