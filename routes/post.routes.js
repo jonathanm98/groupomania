@@ -21,7 +21,8 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ fileSize: 2097152, storage: storage });
 
-router.get("/:count", auth.authView, postController.getAllPosts);
+router.get("/:index", auth.authView, postController.getAllPosts);
+router.get("/refresh/:count", auth.authView, postController.refreshPosts);
 
 router.post("/create/post", auth.addContent, upload.single("file"), postController.createPost);
 router.delete("/delete/post/:id", auth.authDeleteContent, postController.deletePost);

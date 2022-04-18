@@ -1,4 +1,5 @@
 const db = require("../config/db");
+const fs = require("fs");
 
 module.exports.getAllPosts = (req, res) => {
   const posts = [];
@@ -9,9 +10,9 @@ module.exports.getAllPosts = (req, res) => {
     post_content AS content,
     post_img AS img,
     post_createdAt AS createdAt
-    FROM posts ORDER BY 'post_createdAt' ASC LIMIT 0,${req.params.count}`,
-    function (err, data) {
-      if (data.length === 0) return res.status(200).send(null);
+    FROM posts ORDER BY id_post DESC LIMIT ${req.params.index}, 5`,
+    (err, data) => {
+      if (data && data.length === 0) return res.status(200).send(null);
       if (err) res.status(500).json(err.sqlMessage);
       else {
         data.map((post) => {
@@ -24,7 +25,7 @@ module.exports.getAllPosts = (req, res) => {
           id_user AS userId,
           comment_content AS content,
           comment_createdAt AS createdAt
-          FROM comments ORDER BY 'comment_createdAt' ASC`,
+          FROM comments`,
           (err, data) => {
             if (err) res.status(500).json(err.sqlMessage);
             else {
@@ -38,8 +39,67 @@ module.exports.getAllPosts = (req, res) => {
                 if (err) res.status(500).json(err.sqlMessage);
                 posts.map((post) => {
                   const likes = data.filter(
-                    (element) =>
-                      element.id_post === post.postId
+                    (element) => element.id_post === post.postId
+                  );
+
+                  const usersLiked = [];
+
+                  likes.map((like) => {
+                    usersLiked.push(like.id_user);
+                  });
+                  post.likes = usersLiked.length;
+                  post.usersLiked = usersLiked;
+                });
+                return res.status(200).json(posts);
+              });
+            }
+          }
+        );
+      }
+    }
+  );
+};
+
+module.exports.refreshPosts = (req, res) => {
+  console.log("hey");
+  const posts = [];
+  db.query(
+    `SELECT 
+    id_post AS postId,
+    id_user AS posterId,
+    post_content AS content,
+    post_img AS img,
+    post_createdAt AS createdAt
+    FROM posts ORDER BY id_post DESC LIMIT 0, ${req.params.count}`,
+    (err, data) => {
+      if (data && data.length === 0) return res.status(200).send(null);
+      if (err) res.status(500).json(err.sqlMessage);
+      else {
+        data.map((post) => {
+          posts.push(post);
+        });
+        db.query(
+          `SELECT 
+          id_comment AS commentId,
+          id_post AS postId,
+          id_user AS userId,
+          comment_content AS content,
+          comment_createdAt AS createdAt
+          FROM comments`,
+          (err, data) => {
+            if (err) res.status(500).json(err.sqlMessage);
+            else {
+              posts.map((post) => {
+                const comments = data.filter(
+                  (element) => element.postId === post.postId
+                );
+                post.comments = comments;
+              });
+              db.query(`SELECT * FROM likes`, (err, data) => {
+                if (err) res.status(500).json(err.sqlMessage);
+                posts.map((post) => {
+                  const likes = data.filter(
+                    (element) => element.id_post === post.postId
                   );
 
                   const usersLiked = [];
@@ -62,7 +122,8 @@ module.exports.getAllPosts = (req, res) => {
 
 module.exports.createPost = (req, res) => {
   if (req.file) {
-    let img = `http://localhost/images/post/${req.file.filename}`;
+    let img = `http://localhost:4242/images/post/${req.file.filename}`;
+    console.log(img);
     db.query(
       `
   INSERT INTO posts (id_user, post_content, post_img)
@@ -70,11 +131,11 @@ module.exports.createPost = (req, res) => {
   (
     ${db.escape(req.body.posterId)},
     ${db.escape(req.body.content)},
-    ${img}
+    ${db.escape(img)}
   )
   `,
       (err, data) => {
-        if (err) res.status(500).json(err.sqlMessage);
+        if (err) console.log(err);
         else res.status(201).send("Post créer");
       }
     );
@@ -98,10 +159,21 @@ module.exports.createPost = (req, res) => {
 
 module.exports.deletePost = (req, res) => {
   db.query(
-    `DELETE FROM posts WHERE id_post = ${db.escape(req.params.id)}`,
-    (err, data) => {
-      if (err) res.status(500).json(err.sqlMessage);
-      else res.status(200).send("Post supprimé");
+    `SELECT * FROM posts WHERE id_post = ${db.escape(req.params.id)}`,
+    async (err, data) => {
+      if (data[0].post_img) {
+        postImg = data[0].post_img.split("/")[5];
+        await fs.unlink(`./images/post/${postImg}`, (err) => {
+          if (err) console.log(err);
+        });
+      }
+      db.query(
+        `DELETE FROM posts WHERE id_post = ${db.escape(req.params.id)}`,
+        (err, data) => {
+          if (err) res.status(500).json(err.sqlMessage);
+          else res.status(200).send("Post supprimé");
+        }
+      );
     }
   );
 };
@@ -111,7 +183,8 @@ module.exports.createComment = (req, res) => {
   db.query(
     `SELECT * FROM posts WHERE id_post = ${req.params.id}`,
     (err, data) => {
-      if (data && data.length === 0) res.status(401).send("La cible n'existe pas !");
+      if (data && data.length === 0)
+        res.status(401).send("La cible n'existe pas !");
       else {
         db.query(
           `INSERT INTO comments (id_post, id_user, comment_content)
@@ -133,7 +206,7 @@ module.exports.createComment = (req, res) => {
 
 module.exports.deleteComment = (req, res) => {
   db.query(
-    `SELECT * FROM posts WHERE id_post = ${req.params.id}`,
+    `SELECT * FROM comments WHERE id_comment = ${req.params.id}`,
     (err, data) => {
       if (data.length === 0) res.status(401).send("La cible n'existe pas !");
       else {
@@ -157,7 +230,9 @@ module.exports.like = (req, res) => {
       if (data.length === 0) res.status(401).send("La cible n'existe pas !");
       else {
         db.query(
-          `SELECT * FROM likes WHERE id_user = ${db.escape(req.body.userId)} AND id_post = ${db.escape(req.params.id)}`,
+          `SELECT * FROM likes WHERE id_user = ${db.escape(
+            req.body.userId
+          )} AND id_post = ${db.escape(req.params.id)}`,
           async (err, data) => {
             if (data[0]) {
               for (const result of data) {
