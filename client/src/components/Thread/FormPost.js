@@ -39,14 +39,28 @@ const FormPost = ({ count }) => {
     setFile(e.target.files[0]);
   };
 
+  const handleVideo = () => {
+    let findLink = post.split(" ");
+    for (let i = 0; i < findLink.length; i++) {
+      const word = findLink[i];
+      if (word.includes("https://www.yout") || word.includes("https://yout")) {
+        let embed = word.replace("watch?v=", "embed/").split("&")[0];
+        setVideo(embed);
+        findLink.splice(i, 1, embed);
+        setPost(findLink.join(" "));
+      }
+    }
+  };
+
   useEffect(() => {
     setError("");
+    handleVideo();
     if (post.length > 0 || file) {
       setPreview(true);
     } else {
       setPreview(false);
     }
-  }, [post, file]);
+  }, [post, file, video]);
 
   return (
     <div className="post-form-container">
@@ -83,6 +97,7 @@ const FormPost = ({ count }) => {
                       setFile(null);
                       setPost("");
                       setPreviewPicture("");
+                      setVideo(null);
                     }}
                     className="reset"
                   >
@@ -106,6 +121,15 @@ const FormPost = ({ count }) => {
                   <div className="post">
                     <p>{post}</p>
                     {previewPicture && <img src={previewPicture}></img>}
+                    {video && (
+                      <iframe
+                        src={video}
+                        title={video}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      ></iframe>
+                    )}
                   </div>
                 </div>
               </div>
