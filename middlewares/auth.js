@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const db = require("../config/db");
 
+// Fonction d'authentification utilisée par le front pour vérifier que l'utilisateur est toujours conncté
 module.exports.auth = async (req, res, next) => {
   try {
     if (req.cookies.jwt) {
@@ -31,7 +32,8 @@ module.exports.auth = async (req, res, next) => {
   }
 };
 
-module.exports.authView = async (req, res, next) => {
+// Fonction middleware qui vérifie que l'utilisateur est authenthifié et passe à la suite du programme
+module.exports.authUser = async (req, res, next) => {
   try {
     if (req.cookies.jwt) {
       const token = req.cookies.jwt;
@@ -59,55 +61,8 @@ module.exports.authView = async (req, res, next) => {
   }
 };
 
-module.exports.addContent = async (req, res, next) => {
-  try {
-    if (req.cookies.jwt) {
-      const token = req.cookies.jwt;
-      const userId = await jwt.verify(token, process.env.TOKEN).id;
-      db.query(
-        `SELECT id_user FROM users WHERE id_user = ${db.escape(userId)}`,
-        (err, data) => {
-          if (err) console.log(err);
-          if (data[0] && data[0].id_user === userId) next();
-        }
-      );
-    } else {
-      res.status(401).json({
-        message: "Vous devez être authentifié pour acceder à cette ressource",
-      });
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(401).send("Vous devez être authentifié !");
-  }
-};
-
-module.exports.authEditUser = async (req, res, next) => {
-  try {
-    const token = req.cookies.jwt;
-    const userId = await jwt.verify(token, process.env.TOKEN).id;
-    if (token) {
-      db.query(
-        `SELECT * FROM users WHERE id_user = ${db.escape(userId)}`,
-        (err, data) => {
-          if (
-            userId === parseInt(req.params.id) ||
-            (data[0] && data[0].user_admin === 1)
-          ) {
-            next();
-          } else
-            res.status(401).send("Vous n'êtes pas authorisé à faire ceci !");
-        }
-      );
-    } else {
-      res.status(401).send("Vous devez être authentifié !");
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(401).send("Vous devez être authentifié !!");
-  }
-};
-
+// Foncction qui vérifie que l'utilisateur qui fais la requete est bien authorisé à modifier
+// le post/commentaire ciblé ou si il est l'administrateur
 module.exports.authDeleteContent = async (req, res, next) => {
   try {
     const token = req.cookies.jwt;
@@ -130,31 +85,6 @@ module.exports.authDeleteContent = async (req, res, next) => {
                 else res.status(401).send("Vous devez être authentifié !");
               }
             );
-          }
-        }
-      );
-    } else {
-      res.status(401).send("Vous devez être authentifié !");
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(401).send("Vous devez être authentifié !");
-  }
-};
-
-module.exports.authLike = async (req, res, next) => {
-  try {
-    const token = req.cookies.jwt;
-    const userId = await jwt.verify(token, process.env.TOKEN).id;
-    if (token) {
-      db.query(
-        `SELECT id_user, user_admin FROM users WHERE id_user = ${db.escape(
-          userId
-        )}`,
-        (err, data) => {
-          if (data[0]) next();
-          else {
-            res.status(401).send("Vous devez être authentifié !");
           }
         }
       );

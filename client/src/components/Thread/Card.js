@@ -76,7 +76,7 @@ const Card = ({ post, count }) => {
               </div>
               <div className="post">
                 <p>{text}</p>
-                {!isEmpty(post.img) && <img src={post.img}></img>}
+                {!isEmpty(post.img) && <img src={post.img} alt=""></img>}
                 {video && (
                   <iframe
                     src={video}

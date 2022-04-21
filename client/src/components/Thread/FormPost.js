@@ -16,6 +16,7 @@ const FormPost = ({ count }) => {
   const [post, setPost] = useState("");
   const [error, setError] = useState("");
   const [previewPicture, setPreviewPicture] = useState("");
+  const [errorImg, setErrorImg] = useState("");
   const [preview, setPreview] = useState(false);
 
   const handlePost = (e) => {
@@ -34,16 +35,34 @@ const FormPost = ({ count }) => {
       setPreviewPicture("");
     } else setError("Vous ne pouvez pas envoyer un post vide !");
   };
+
   const handlePicture = (e) => {
-    setPreviewPicture(URL.createObjectURL(e.target.files[0]));
-    setFile(e.target.files[0]);
+    const fileName = e.target.files[0].name.split(".");
+    const fileNameLength = fileName.length - 1;
+    if (
+      e.target.files[0].name.split(".")[fileNameLength] === "jpg" ||
+      e.target.files[0].name.split(".")[fileNameLength] === "jpeg" ||
+      e.target.files[0].name.split(".")[fileNameLength] === "png" ||
+      e.target.files[0].name.split(".")[fileNameLength] === "gif"
+    ) {
+      setErrorImg("");
+      setPreviewPicture(URL.createObjectURL(e.target.files[0]));
+      setFile(e.target.files[0]);
+    } else {
+      setFile(null);
+      setErrorImg("Vous devez mettre une image valide !");
+      setPreviewPicture("");
+    }
   };
 
   const handleVideo = () => {
     let findLink = post.split(" ");
     for (let i = 0; i < findLink.length; i++) {
       const word = findLink[i];
-      if (word.includes("https://www.yout") || word.includes("https://yout")) {
+      if (
+        word.includes("https://www.youtube.com/watch?v=") ||
+        word.includes("https://youtube.com/watch?v=")
+      ) {
         let embed = word.replace("watch?v=", "embed/").split("&")[0];
         setVideo(embed);
         findLink.splice(i, 1, embed);
@@ -55,12 +74,12 @@ const FormPost = ({ count }) => {
   useEffect(() => {
     setError("");
     handleVideo();
-    if (post.length > 0 || file) {
+    if (post.length > 0 || file || errorImg) {
       setPreview(true);
     } else {
       setPreview(false);
     }
-  }, [post, file, video]);
+  }, [post, file, video, errorImg]);
 
   return (
     <div className="post-form-container">
@@ -98,6 +117,7 @@ const FormPost = ({ count }) => {
                       setPost("");
                       setPreviewPicture("");
                       setVideo(null);
+                      setErrorImg("");
                     }}
                     className="reset"
                   >
@@ -121,6 +141,7 @@ const FormPost = ({ count }) => {
                   <div className="post">
                     <p>{post}</p>
                     {previewPicture && <img src={previewPicture}></img>}
+                    {errorImg && <h2 className="error-msg">{errorImg}</h2>}
                     {video && (
                       <iframe
                         src={video}

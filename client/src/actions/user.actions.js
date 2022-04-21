@@ -8,7 +8,7 @@ export const getUser = (uid) => {
   return (dispatch) => {
     return axios({
       method: "GET",
-      url: `${process.env.REACT_APP_API_URL}/api/user/get/${uid}`,
+      url: `${process.env.REACT_APP_API_URL}/api/user/get/`,
       withCredentials: true,
     })
       .then((res) => {

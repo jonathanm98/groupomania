@@ -1,7 +1,9 @@
 const db = require("../config/db");
 const fs = require("fs");
 
-module.exports.getAllPosts = (req, res) => {
+// Fonction qui va incrementer les posts 5 par 5 pendant le scrolling de l'utilisateur
+module.exports.incPosts = (req, res) => {
+  console.log("ffdsfsd");
   const posts = [];
   db.query(
     `SELECT 
@@ -11,6 +13,8 @@ module.exports.getAllPosts = (req, res) => {
     post_img AS img,
     post_createdAt AS createdAt
     FROM posts ORDER BY id_post DESC LIMIT ${req.params.index}, 5`,
+    // On utilise juste au dessus l'index des posts contenu
+    // dans le front pour récupèrer les 5 suivants
     (err, data) => {
       if (data && data.length === 0) return res.status(200).send(null);
       if (err) res.status(500).json(err.sqlMessage);
@@ -60,6 +64,7 @@ module.exports.getAllPosts = (req, res) => {
   );
 };
 
+// Fonction qui met à jour les posts affichés en front
 module.exports.refreshPosts = (req, res) => {
   const posts = [];
   db.query(
@@ -119,10 +124,11 @@ module.exports.refreshPosts = (req, res) => {
   );
 };
 
+// Fonction de création de post
 module.exports.createPost = (req, res) => {
+  // Si on envoie une image avec notre post on la renomme et on envoie tout à la DB
   if (req.file) {
     let img = `http://localhost:4242/images/post/${req.file.filename}`;
-    console.log(img);
     db.query(
       `
   INSERT INTO posts (id_user, post_content, post_img)
@@ -138,6 +144,7 @@ module.exports.createPost = (req, res) => {
         else res.status(201).send("Post créer");
       }
     );
+    // SINON On envoie seulement le post
   } else {
     db.query(
       `
@@ -156,13 +163,15 @@ module.exports.createPost = (req, res) => {
   }
 };
 
+// Fonction de suppression de post
 module.exports.deletePost = (req, res) => {
   db.query(
     `SELECT * FROM posts WHERE id_post = ${db.escape(req.params.id)}`,
     async (err, data) => {
+      // SI on a une image dans notre post on le supprime via le paquet fs
       if (data[0].post_img) {
         postImg = data[0].post_img.split("/")[5];
-        await fs.unlink(`./images/post/${postImg}`, (err) => {
+        fs.unlink(`./images/post/${postImg}`, (err) => {
           if (err) console.log(err);
         });
       }
@@ -177,8 +186,8 @@ module.exports.deletePost = (req, res) => {
   );
 };
 
+// Fonction de creation de commentaire
 module.exports.createComment = (req, res) => {
-  console.log(req.body);
   db.query(
     `SELECT * FROM posts WHERE id_post = ${req.params.id}`,
     (err, data) => {
@@ -203,12 +212,16 @@ module.exports.createComment = (req, res) => {
   );
 };
 
+// Fonction de creation de commentaire
 module.exports.deleteComment = (req, res) => {
+  // On vérifie que le post ciblé existe
   db.query(
     `SELECT * FROM comments WHERE id_comment = ${req.params.id}`,
     (err, data) => {
-      if (data.length === 0) res.status(401).send("La cible n'existe pas !");
+      if (data && data.length === 0)
+        res.status(401).send("La cible n'existe pas !");
       else {
+        // Et on supprime le commentaire
         db.query(
           `DELETE FROM comments WHERE id_comment = ${db.escape(req.params.id)}`,
           (err, data) => {
@@ -221,7 +234,9 @@ module.exports.deleteComment = (req, res) => {
   );
 };
 
+// Fonction d'ajout de like sur un post
 module.exports.like = (req, res) => {
+  // On vérifie que le post ciblé existe
   db.query(
     `SELECT * FROM posts WHERE id_post = ${req.params.id}`,
     (err, data) => {
@@ -233,6 +248,8 @@ module.exports.like = (req, res) => {
             req.body.userId
           )} AND id_post = ${db.escape(req.params.id)}`,
           async (err, data) => {
+            // SI on trouve déjà un like avec cet id_user et ce id_post, l'utilisateur dislike
+            // et on supprime donc le like en question
             if (data[0]) {
               for (const result of data) {
                 if (result.id_user === parseInt(req.body.userId)) {
@@ -245,7 +262,9 @@ module.exports.like = (req, res) => {
                   );
                 }
               }
-            } else {
+            }
+            // SINON on sait que l'utilisateur veux ajouter un like et en envoie le like à la DB
+            else {
               db.query(
                 `INSERT INTO likes (id_post, id_user, like_value)
               VALUES

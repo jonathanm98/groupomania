@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const usersController = require("../controllers/users.controller");
-const { authEditUser, auth, authView } = require("../middlewares/auth");
+const { auth, authUser } = require("../middlewares/auth");
 const multer = require("multer");
 
 // Fonction de multer qui envoie l'image au dossier images/user et la renomme de façon a eviter les conflit de fichiers
@@ -25,16 +25,20 @@ router.post("/login", usersController.login);
 router.post("/register", usersController.register);
 router.get("/logout", usersController.logout);
 
-router.get("/get/all", authView, usersController.getAllUsers)
-router.get("/get/", authEditUser, usersController.getCurrentUser)
-router.get("/get/:id", authView, usersController.getOneUser)
+router.get("/get/all", authUser, usersController.getAllUsers);
+router.get("/get/", authUser, usersController.getCurrentUser);
 
-router.delete("/delete/:id", authEditUser, usersController.deleteUser);
+router.delete("/delete/:id", authUser, usersController.deleteUser);
 
-router.put("/edit/picture/:id", authEditUser, upload.single("file"), usersController.editUserImg);
+router.put(
+  "/edit/picture/:id",
+  authUser,
+  upload.single("file"),
+  usersController.editUserImg
+);
 
-router.put("/edit/bio/:id", authEditUser, usersController.editUserBio);
+router.put("/edit/bio/:id", authUser, usersController.editUserBio);
 
-router.get("/auth", auth)
+router.get("/auth", auth);
 
 module.exports = router;

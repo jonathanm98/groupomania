@@ -3,7 +3,7 @@ const postController = require("../controllers/post.controller");
 const auth = require("../middlewares/auth");
 const multer = require("multer");
 
-// Fonction de multer qui envoie l'image au dossier front et la renomme de façon a eviter les conflit de fichiers
+// Fonction de multer qui agit sur les fichiers du disque pour renomer nos images et les placer dans le bon dossier
 const mimetypes = {
   "image/jpg": "jpg",
   "image/jpeg": "jpg",
@@ -22,12 +22,12 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ fileSize: 2097152, storage: storage });
 
-router.get("/:index", auth.authView, postController.getAllPosts);
-router.get("/refresh/:count", auth.authView, postController.refreshPosts);
+router.get("/:index/", auth.authUser, postController.incPosts);
+router.get("/refresh/:count", auth.authUser, postController.refreshPosts);
 
 router.post(
   "/create/post",
-  auth.addContent,
+  auth.authUser,
   upload.single("file"),
   postController.createPost
 );
@@ -37,14 +37,14 @@ router.delete(
   postController.deletePost
 );
 
-router.post("/create/comment", auth.addContent, postController.createComment);
+router.post("/create/comment", auth.authUser, postController.createComment);
 router.delete(
   "/delete/comment/:id",
   auth.authDeleteContent,
   postController.deleteComment
 );
 
-router.post("/like/:id", auth.authLike, postController.like);
-router.post("/dislike/:id", auth.authLike, postController.like);
+router.post("/like/:id", auth.authUser, postController.like);
+router.post("/dislike/:id", auth.authUser, postController.like);
 
 module.exports = router;
