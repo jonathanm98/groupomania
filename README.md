@@ -22,14 +22,14 @@ Créer une base de données en utilisant le fichier `db.sql` founi qui contiens 
 ##### Installation et lancement du backend
 
 ```sh
-cd jonathanmenelet_7_09032022-master
+cd groupomania-master
 npm i
 npm start
 ```
 ##### Installation et lancement du front REACT
 
 ```sh
-cd jonathanmenelet_7_09032022-master/client
+cd groupomania-master/client
 npm i
 npm start
 ```
