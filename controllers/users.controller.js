@@ -1,5 +1,5 @@
 const db = require("../config/db");
-require("dotenv").config({ path: "./config/.env" });
+require("dotenv").config({ path: "./.env" });
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("cookie-parser");
@@ -143,8 +143,8 @@ module.exports.deleteUser = async (req, res) => {
     )} AND post_img IS NOT NULL
       UNION
       SELECT user_picture AS imgUrl FROM users WHERE id_user = ${db.escape(
-        req.params.id
-      )};`,
+      req.params.id
+    )};`,
     async (err, data) => {
       if (err) res.status(500).json(err.sqlMessage);
       // Si on as des images on les map pour supprimer tout les fichiers
