@@ -9,6 +9,7 @@ import FormPost from "../components/Thread/FormPost";
 import { isEmpty } from "../Utils";
 
 const Thread = () => {
+
   const uid = useContext(UidContext);
   const posts = useSelector((state) => state.postsReducer);
   const [initPosts, setInitPosts] = useState(true);
@@ -38,6 +39,7 @@ const Thread = () => {
     }
     window.addEventListener("scroll", loadMore);
     return () => window.removeEventListener("scroll", loadMore);
+    //eslint-disable-next-line
   }, [loadPosts]);
 
   return (

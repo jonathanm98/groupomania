@@ -14,7 +14,6 @@ const CommentCard = ({ post, count }) => {
   const userData = useSelector((state) => state.userReducer);
   const uid = useContext(UidContext);
   const dispatch = useDispatch();
-  console.log();
 
   const handleComment = async (e) => {
     e.preventDefault();
@@ -62,8 +61,10 @@ const CommentCard = ({ post, count }) => {
               <div className="comment-header">
                 <h3>
                   {usersData.map((user) => {
-                    if (user.userId === comment.userId)
+                    if (user.userId === comment.userId) {
                       return user.firstName + " " + user.lastName;
+                    }
+                    return null;
                   })}
                 </h3>
                 <p>{dateParser(comment.createdAt)}</p>
@@ -72,15 +73,15 @@ const CommentCard = ({ post, count }) => {
                 <p>{comment.content}</p>
                 {(userData.admin === 1 ||
                   userData.userId === comment.userId) && (
-                  <button
-                    className="delete-btn"
-                    type="reset"
-                    onClick={() => handleDelete(comment.commentId)}
-                  >
-                    <img src="./img/trash.svg" alt="Supprimer commentaire" />
-                    <p>Supprimer</p>
-                  </button>
-                )}
+                    <button
+                      className="delete-btn"
+                      type="reset"
+                      onClick={() => handleDelete(comment.commentId)}
+                    >
+                      <img src="./img/trash.svg" alt="Supprimer commentaire" />
+                      <p>Supprimer</p>
+                    </button>
+                  )}
               </div>
             </div>
           </div>

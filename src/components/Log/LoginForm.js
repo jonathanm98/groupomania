@@ -1,30 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+
 import axios from "axios";
 import { isEmail } from "validator";
 
 const LoginForm = () => {
-  document.title = "Groupomania - Connexion"
+  useEffect(() => {
+    document.title = "Groupomania - Connexion";
+  }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [validForm, setValidForm] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validateInputs = () => {
+      let isValid = true;
+
       if (!isEmail(email)) {
         setEmailError("Email ou mot de passe incorrect");
-        setValidForm(false);
-      } else setValidForm(true);
+        isValid = false;
+      } else {
+        setEmailError("");
+      }
+
       if (password.length < 8) {
         setPasswordError("Email ou mot de passe incorrect");
-        setValidForm(false);
-      } else setValidForm(true);
+        isValid = false;
+      } else {
+        setPasswordError("");
+      }
+
+      return isValid;
     };
-    validateInputs();
-    if (validForm) {
+
+    const formIsValid = validateInputs();
+
+    if (formIsValid) {
       axios({
         method: "POST",
         url: `${process.env.REACT_APP_API_URL}/api/user/login`,
@@ -34,7 +50,9 @@ const LoginForm = () => {
           password,
         },
       })
-        .then((res) => window.location = "/")
+        .then((res) => {
+          navigate("/");
+        })
         .catch((err) => {
           if (err.response.data.credentials) {
             setPasswordError(err.response.data.credentials);
@@ -42,6 +60,7 @@ const LoginForm = () => {
         });
     }
   };
+
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
       <label htmlFor="email">Email</label>

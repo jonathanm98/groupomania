@@ -28,6 +28,7 @@ function App() {
       dispatch(getUser(uid));
       dispatch(getUsers())
     }
+    //eslint-disable-next-line
   }, [uid]);
 
   return (

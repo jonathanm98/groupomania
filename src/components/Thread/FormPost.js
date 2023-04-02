@@ -37,21 +37,37 @@ const FormPost = ({ count }) => {
   };
 
   const handlePicture = (e) => {
-    const fileName = e.target.files[0].name.split(".");
-    const fileNameLength = fileName.length - 1;
+    const fileName = e.target.files[0]?.name.split(".");
+    const fileNameLength = fileName?.length - 1;
+
+    const removeVideoLink = (text) => {
+      let words = text.split(" ");
+      words = words.filter((word) => {
+        return (
+          !word.includes("https://www.youtube.com/watch?v=") &&
+          !word.includes("https://youtube.com/watch?v=") &&
+          !word.includes("https://www.youtube.com/embed/")
+        );
+      });
+      return words.join(" ");
+    };
+
     if (
-      e.target.files[0].name.split(".")[fileNameLength] === "jpg" ||
-      e.target.files[0].name.split(".")[fileNameLength] === "jpeg" ||
-      e.target.files[0].name.split(".")[fileNameLength] === "png" ||
-      e.target.files[0].name.split(".")[fileNameLength] === "gif"
+      e.target.files[0]?.name.split(".")[fileNameLength] === "jpg" ||
+      e.target.files[0]?.name.split(".")[fileNameLength] === "jpeg" ||
+      e.target.files[0]?.name.split(".")[fileNameLength] === "png" ||
+      e.target.files[0]?.name.split(".")[fileNameLength] === "gif" ||
+      e.target.files[0]?.name.split(".")[fileNameLength] === "webp"
     ) {
       setErrorImg("");
       setPreviewPicture(URL.createObjectURL(e.target.files[0]));
       setFile(e.target.files[0]);
+      setVideo(null);
+      setPost("");
     } else {
       setFile(null);
       setErrorImg("Vous devez mettre une image valide !");
-      setPreviewPicture("");
+      setPreviewPicture(removeVideoLink(post));
     }
   };
 
@@ -67,6 +83,14 @@ const FormPost = ({ count }) => {
         setVideo(embed);
         findLink.splice(i, 1, embed);
         setPost(findLink.join(" "));
+        setFile(null);
+        setPreviewPicture("");
+      } else if (word.includes("https://www.youtube.com/embed/")) {
+        setVideo(word);
+        setFile(null);
+        setPreviewPicture("");
+      } else {
+        setVideo(null);
       }
     }
   };
@@ -79,6 +103,7 @@ const FormPost = ({ count }) => {
     } else {
       setPreview(false);
     }
+    //eslint-disable-next-line
   }, [post, file, video, errorImg]);
 
   return (
@@ -97,15 +122,21 @@ const FormPost = ({ count }) => {
             ></textarea>
             <div className="post-form-buttons">
               <label htmlFor="file-upload">
-                <img src="./img/image.svg" alt="Ajouter une image" />
+                <img src="./img/image.svg" alt="Boutton pour ajouter une image" />
               </label>
               <input
                 type="file"
                 name="file"
                 id="file-upload"
                 onChange={(e) => {
-                  setFile(e.target.files[0]);
-                  handlePicture(e);
+                  if (e.target.files.length > 0) { // Vérifie si un fichier a été sélectionné
+                    setFile(e.target.files[0]);
+                    handlePicture(e);
+                  } else {
+                    setFile(null);
+                    setPreviewPicture("");
+                    setErrorImg("");
+                  }
                 }}
               />
               <div>
@@ -140,13 +171,12 @@ const FormPost = ({ count }) => {
                   </div>
                   <div className="post">
                     <p>{post}</p>
-                    {previewPicture && <img src={previewPicture}></img>}
+                    {previewPicture && <img src={previewPicture} alt="Prévisualisation de votre fichier"></img>}
                     {errorImg && <h2 className="error-msg">{errorImg}</h2>}
                     {video && (
                       <iframe
                         src={video}
                         title={video}
-                        frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                       ></iframe>

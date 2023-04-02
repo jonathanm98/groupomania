@@ -28,7 +28,6 @@ const Card = ({ post, count }) => {
       ) {
         setVideo(word);
         findLink.splice(i, 1);
-        console.log(findLink.join(" "));
         setText(findLink.join(" "));
       }
     }
@@ -39,13 +38,14 @@ const Card = ({ post, count }) => {
   });
   useEffect(() => {
     handleVideo();
+    //eslint-disable-next-line
   }, [video]);
 
   return (
     <div className="main-container">
       <div className="card-container" key={post.postId}>
         {isLoading ? (
-          <img className="loading" src="./img/loading.svg" />
+          <img className="loading" src="./img/loading.svg" alt="Animation de chargement" />
         ) : (
           <>
             <div className="picture">

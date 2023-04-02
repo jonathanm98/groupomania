@@ -18,7 +18,6 @@ export const incPosts = (index) => {
       withCredentials: true,
     })
       .then((res) => {
-        console.log(res);
         if (res.data[0]) dispatch({ type: INC_POSTS, payload: res.data });
       })
       .catch((err) => {
@@ -53,7 +52,6 @@ export const addPost = (data) => {
       withCredentials: true,
       data,
     })
-      .then((res) => console.log(res))
       .catch((err) => {
         window.location = "/";
         console.log(err);

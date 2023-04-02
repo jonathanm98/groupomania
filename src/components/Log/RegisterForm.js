@@ -1,15 +1,16 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { isEmail } from "validator";
 
 const RegisterForm = () => {
-  document.title = "Groupomania - Inscription"
+  useEffect(() => {
+    document.title = "Groupomania - Inscription";
+  }, []);
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const [validForm, setValidForm] = useState(false);
 
   const [successMessage, setSuccessMessage] = useState("")
 
@@ -21,25 +22,42 @@ const RegisterForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const validateInputs = () => {
+      let isValid = true;
+
       if (firstName.length === 0) {
         setFirstNameError("Vous devez saisir un prénom");
-        setValidForm(false)
-      } else setValidForm(true);
+        isValid = false;
+      } else {
+        setFirstNameError("");
+      }
+
       if (lastName.length === 0) {
         setLastNameError("Vous devez saisir un nom");
-        setValidForm(false)
-      } else setValidForm(true);
+        isValid = false;
+      } else {
+        setLastNameError("");
+      }
+
       if (!isEmail(email)) {
         setEmailError("Adresse mail incorrecte");
-        setValidForm(false)
-      } else setValidForm(true);
+        isValid = false;
+      } else {
+        setEmailError("");
+      }
+
       if (password.length < 8) {
-        setPasswordError("Votre mot de passe doir faire au moins 8 caractères ");
-        setValidForm(false)
-      } else setValidForm(true);
+        setPasswordError("Votre mot de passe doit faire au moins 8 caractères");
+        isValid = false;
+      } else {
+        setPasswordError("");
+      }
+
+      return isValid;
     };
-    validateInputs()
-    if (validForm) {
+
+    const formIsValid = validateInputs();
+
+    if (formIsValid) {
       axios({
         method: "POST",
         url: `${process.env.REACT_APP_API_URL}/api/user/register`,
@@ -51,15 +69,15 @@ const RegisterForm = () => {
           password
         }
       })
-      .then((res) => setSuccessMessage(res.data))
-      .catch((err) => {
-        if (err.response.data.email) {
-          setEmailError(err.response.data.email);
-        }
-        if (err.response.data.password) {
-          setPasswordError(err.response.data.password);
-        }
-      })
+        .then((res) => setSuccessMessage(res.data))
+        .catch((err) => {
+          if (err.response.data.email) {
+            setEmailError(err.response.data.email);
+          }
+          if (err.response.data.password) {
+            setPasswordError(err.response.data.password);
+          }
+        })
     }
   };
 
