@@ -1,12 +1,12 @@
-DROP DATABASE IF EXISTS `groupomania2`;
+DROP DATABASE IF EXISTS `groupomania`;
 
-CREATE DATABASE `groupomania2`;
+CREATE DATABASE `groupomania`;
 
-USE `groupomania2`;
+USE `groupomania`;
 
-CREATE USER IF NOT EXISTS 'projet7_limited'@'%' IDENTIFIED BY 'projet7';
+CREATE USER IF NOT EXISTS 'client'@'192.168.1.3' IDENTIFIED BY 'ft8_gfdqzr46-fghjklm';
 
-GRANT CREATE, DELETE, INSERT, SELECT ON groupomania2.* TO 'projet7_limited'@'%';
+GRANT CREATE, DELETE, INSERT, SELECT ON groupomania.* TO 'client'@'192.168.1.3';
 
 CREATE TABLE `users` (
   `id_user` int NOT NULL AUTO_INCREMENT,

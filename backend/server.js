@@ -2,7 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const usersRoutes = require("./routes/users.routes");
 const postRoutes = require("./routes/post.routes");
-require("dotenv").config({ path: "./config/.env" });
+require("dotenv").config({ path: "./.env" });
 const db = require("./config/db");
 const cors = require("cors");
 const { xss } = require("express-xss-sanitizer");
