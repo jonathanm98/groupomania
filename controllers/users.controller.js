@@ -92,7 +92,6 @@ module.exports.login = async (req, res) => {
 
 // Fonction de deconnexion qui renvoie un cookie vide
 module.exports.logout = async (req, res) => {
-  console.log("ok");
   await res.cookie("jwt", "", {
     maxAge: 1,
   });
@@ -189,6 +188,7 @@ module.exports.deleteUser = async (req, res) => {
 
 // fonction pour editer la photo de l'utilisateur
 module.exports.editUserImg = (req, res) => {
+  const apiUrl = req.protocol + '://' + req.get('host');
   db.query(
     `SELECT user_picture FROM users WHERE id_user = ${db.escape(
       req.params.id
@@ -197,7 +197,7 @@ module.exports.editUserImg = (req, res) => {
       if (err) res.status(500).json(err.sqlMessage);
       else if (data[0]) {
         oldImg = data[0].user_picture.split("/")[5];
-        let img = `http://localhost:4242/images/user/${req.file.filename}`;
+        let img = `${apiUrl}/images/user/${req.file.filename}`;
         if (oldImg !== "default.jpg") {
           fs.unlink(`./images/user/${oldImg}`, (err) => {
             if (err) console.log(err);
