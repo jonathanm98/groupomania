@@ -1,4 +1,4 @@
-# Projet Groupomania - Jonathan Menelet
+# Projet Groupomania - API
 
 ## Tâches réalisées
 
