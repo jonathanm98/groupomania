@@ -155,7 +155,7 @@ const FormPost = ({ count }) => {
                     Annuler
                   </button>
                 )}
-                <input type="submit" />
+                <input type="submit" value="Publier" />
               </div>
             </div>
             {error && <p className="error-msg">{error}</p>}

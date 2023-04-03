@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
 
 import axios from "axios";
 import { isEmail } from "validator";
 
 const LoginForm = () => {
+
   useEffect(() => {
     document.title = "Groupomania - Connexion";
   }, []);
@@ -14,7 +13,6 @@ const LoginForm = () => {
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,8 +48,8 @@ const LoginForm = () => {
           password,
         },
       })
-        .then((res) => {
-          navigate("/");
+        .then(() => {
+          window.location.reload()
         })
         .catch((err) => {
           if (err.response.data.credentials) {
