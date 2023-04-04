@@ -32,7 +32,7 @@ export const uploadPicture = (data, id) => {
       .then((res) => {
         return axios({
           method: "GET",
-          url: `${process.env.REACT_APP_API_URL}/api/user/get/${id}`,
+          url: `${process.env.REACT_APP_API_URL}/api/user/get/`,
           withCredentials: true,
         })
           .then((res) =>
