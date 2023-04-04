@@ -22,7 +22,7 @@ export const incPosts = (index) => {
       })
       .catch((err) => {
         console.log(err);
-        window.location = "/";
+        window.location.reload();
       });
   };
 };
@@ -39,7 +39,7 @@ export const refreshPosts = (count) => {
       })
       .catch((err) => {
         console.log(err);
-        window.location = "/";
+        window.location.reload();
       });
   };
 };
@@ -53,7 +53,7 @@ export const addPost = (data) => {
       data,
     })
       .catch((err) => {
-        window.location = "/";
+        window.location.reload();
         console.log(err);
       });
   };
@@ -80,7 +80,7 @@ export const likePost = (post, user) => {
         });
       })
       .catch((err) => {
-        window.location = "/";
+        window.location.reload();
         console.log(err);
       });
   };
@@ -108,7 +108,7 @@ export const unlikePost = (post, user) => {
       })
       .catch((err) => {
         console.log(err);
-        window.location = "/";
+        window.location.reload();
       });
   };
 };
@@ -125,7 +125,7 @@ export const deletePost = (postId) => {
       })
       .catch((err) => {
         console.log(err);
-        window.location = "/";
+        window.location.reload();
       });
   };
 };

@@ -26,8 +26,8 @@ const Profil = () => {
     e.preventDefault();
     const data = new FormData();
     data.append("file", file);
-    dispatch(uploadPicture(data, userData.userId));
-    window.location = "/profil";
+    dispatch(uploadPicture(data, userData.userId)).then((e) => console.log(e));
+    // window.location.reload();
   };
   const handleBio = () => {
     dispatch(updateBio(bio, userData.userId));
@@ -48,7 +48,7 @@ const Profil = () => {
       url: `${process.env.REACT_APP_API_URL}/api/user/logout`,
       withCredentials: true,
     })
-      .then((res) => (window.location = "/"))
+      .then((res) => (window.location.reload()))
       .catch((err) => console.log(err));
   };
   const handleDelete = () => {
@@ -58,7 +58,7 @@ const Profil = () => {
       url: `${process.env.REACT_APP_API_URL}/api/user/delete/${userData.userId}`,
       withCredentials: true,
     })
-      .then((res) => (window.location = "/"))
+      .then((res) => (window.location.reload()))
       .catch((err) => console.log(err));
   };
   return (

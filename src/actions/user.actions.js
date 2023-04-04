@@ -16,7 +16,7 @@ export const getUser = (uid) => {
       })
       .catch((err) => {
         console.log(err);
-        window.location = "/";
+        window.location.reload();
       });
   };
 };
@@ -40,12 +40,12 @@ export const uploadPicture = (data, id) => {
           )
           .catch((err) => {
             console.log(err);
-            window.location = "/";
+            // window.location.reload();
           });
       })
       .catch((err) => {
         console.log(err);
-        window.location = "/";
+        // window.location.reload();
       });
   };
 };
