@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const isEmpty = (value) => {
   return (
     value === undefined ||
@@ -24,7 +22,7 @@ export const dateParser = (num) => {
     .toLocaleDateString("fr-FR", options)
     .replace(",", " à ");
 
-  if (date == "Invalid Date") return "Maintenant";
+  if (date === "Invalid Date") return "Maintenant";
   return date.toString();
 };
 
