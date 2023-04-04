@@ -2,12 +2,14 @@ const router = require("express").Router();
 const usersController = require("../controllers/users.controller");
 const { auth, authUser } = require("../middlewares/auth");
 const multer = require("multer");
+const { imgProcess } = require("../middlewares/imgProcess")
 
 // Fonction de multer qui envoie l'image au dossier images/user et la renomme de façon a eviter les conflit de fichiers
 const mimetypes = {
   "image/jpg": "jpg",
-  "image/jpeg": "jpg",
+  "image/jpeg": "jpeg",
   "image/png": "png",
+  "image/webp": "webp",
 };
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -19,7 +21,7 @@ const storage = multer.diskStorage({
     callback(null, name + Date.now() + "." + ext);
   },
 });
-const upload = multer({ fileSize: 2097152, storage: storage });
+const upload = multer({ fileSize: 20000000, storage: storage });
 
 router.post("/login", usersController.login);
 router.post("/register", usersController.register);
@@ -34,7 +36,8 @@ router.put(
   "/edit/picture/:id",
   authUser,
   upload.single("file"),
-  usersController.editUserImg
+  imgProcess,
+  usersController.editUserImg,
 );
 
 router.put("/edit/bio/:id", authUser, usersController.editUserBio);

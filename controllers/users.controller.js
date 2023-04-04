@@ -76,6 +76,8 @@ module.exports.login = async (req, res) => {
           await res.cookie("jwt", token, {
             httpOnly: true,
             maxAge: 1 * 60 * 60 * 1000,
+            sameSite: 'none',
+            secure: true,
           });
           res.status(200).json({ message: "Authentification réussie" });
         } else
@@ -94,6 +96,8 @@ module.exports.login = async (req, res) => {
 module.exports.logout = async (req, res) => {
   await res.cookie("jwt", "", {
     maxAge: 1,
+    sameSite: 'none',  // définir SameSite sur "none" pour autoriser les cookies cross-site
+    secure: true,
   });
   res.status(200).send("Vous êtes déconnecté");
 };
@@ -151,7 +155,7 @@ module.exports.deleteUser = async (req, res) => {
         await data.map((img) => {
           const file = img.imgUrl.split("/")[5];
           const folder = img.imgUrl.split("/")[4];
-          if (file !== "default.jpg") {
+          if (file !== "default.webp") {
             fs.unlink(`./images/${folder}/${file}`, (err) => {
               if (err) console.log(err);
             });
@@ -197,12 +201,13 @@ module.exports.editUserImg = (req, res) => {
       if (err) res.status(500).json(err.sqlMessage);
       else if (data[0]) {
         oldImg = data[0].user_picture.split("/")[5];
-        let img = `${apiUrl}/images/user/${req.file.filename}`;
+        let img = `http://localhost:4242/images/user/${req.file.filename}`;
         if (oldImg !== "default.jpg") {
           fs.unlink(`./images/user/${oldImg}`, (err) => {
             if (err) console.log(err);
           });
         }
+        console.log(img)
         db.query(
           `UPDATE users SET user_picture = ${db.escape(
             img

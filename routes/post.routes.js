@@ -2,13 +2,15 @@ const router = require("express").Router();
 const postController = require("../controllers/post.controller");
 const auth = require("../middlewares/auth");
 const multer = require("multer");
+const { imgProcess } = require("../middlewares/imgProcess")
 
 // Fonction de multer qui agit sur les fichiers du disque pour renomer nos images et les placer dans le bon dossier
 const mimetypes = {
   "image/jpg": "jpg",
-  "image/jpeg": "jpg",
+  "image/jpeg": "jpeg",
   "image/png": "png",
   "image/gif": "gif",
+  "image/webp": "webp",
 };
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -20,7 +22,7 @@ const storage = multer.diskStorage({
     callback(null, name + Date.now() + "." + ext);
   },
 });
-const upload = multer({ fileSize: 2097152, storage: storage });
+const upload = multer({ fileSize: 10 * 1024 * 1024, storage: storage });
 
 router.get("/:index/", auth.authUser, postController.incPosts);
 router.get("/refresh/:count", auth.authUser, postController.refreshPosts);
@@ -29,7 +31,9 @@ router.post(
   "/create/post",
   auth.authUser,
   upload.single("file"),
-  postController.createPost
+  imgProcess,
+  postController.createPost,
+
 );
 router.delete(
   "/delete/post/:id",
