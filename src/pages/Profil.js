@@ -27,7 +27,6 @@ const Profil = () => {
     const data = new FormData();
     data.append("file", file);
     dispatch(uploadPicture(data, userData.userId)).then((e) => console.log(e));
-    // window.location.reload();
   };
   const handleBio = () => {
     dispatch(updateBio(bio, userData.userId));
