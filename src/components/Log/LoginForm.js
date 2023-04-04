@@ -3,7 +3,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { isEmail } from "validator";
 
+import { ReactComponent as Eye } from "../../assets/eye.svg";
+import { ReactComponent as EyeOff } from "../../assets/eye-slash.svg";
+
 const LoginForm = () => {
+  const [visiblePassword, setVisiblePassword] = useState(false);
 
   useEffect(() => {
     document.title = "Groupomania - Connexion";
@@ -75,16 +79,21 @@ const LoginForm = () => {
       <p className="error-msg email-error">{emailError}</p>
 
       <label htmlFor="password">Mot de passe</label>
-      <input
-        name="password"
-        id="password"
-        type="password"
-        value={password}
-        onChange={(e) => {
-          setPassword(e.target.value);
-          setPasswordError("");
-        }}
-      />
+      <div className="password-input">
+        <input
+          name="password"
+          id="password"
+          type={visiblePassword ? "text" : "password"}
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setPasswordError("");
+          }}
+        />
+        <div onClick={() => setVisiblePassword(!visiblePassword)}>
+          {visiblePassword ? <Eye /> : <EyeOff />}
+        </div>
+      </div>
       <p className="error-msg password-error">{passwordError}</p>
 
       <input type="submit" value="Connection" className="btn" />

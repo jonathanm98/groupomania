@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { isEmail } from "validator";
+import { ReactComponent as Eye } from "../../assets/eye.svg";
+import { ReactComponent as EyeOff } from "../../assets/eye-slash.svg";
 
 const RegisterForm = () => {
   useEffect(() => {
@@ -18,6 +20,8 @@ const RegisterForm = () => {
   const [lastNameError, setLastNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
+  const [visiblePassword, setVisiblePassword] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -123,16 +127,21 @@ const RegisterForm = () => {
       <p className="error-msg email-error">{emailError}</p>
 
       <label htmlFor="password">Mot de passe</label>
-      <input
-        name="password"
-        id="password"
-        type="password"
-        value={password}
-        onChange={(e) => {
-          setPassword(e.target.value);
-          setPasswordError("")
-        }}
-      />
+      <div className="password-input">
+        <input
+          name="password"
+          id="password"
+          type={visiblePassword ? "text" : "password"}
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setPasswordError("")
+          }}
+        />
+        <label htmlFor="password" onClick={() => { setVisiblePassword(!visiblePassword) }}>
+          {visiblePassword ? <Eye /> : <EyeOff />}
+        </label>
+      </div>
       <p className="error-msg password-error">{passwordError}</p>
 
       <input type="submit" value="Inscription" className="btn" />
