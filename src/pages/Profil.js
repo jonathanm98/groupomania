@@ -90,6 +90,7 @@ const Profil = () => {
               accept=".jpg, .jpeg, .png, .webp"
               required
               onChange={(e) => {
+                setErrorImg("")
                 if (e.target.files.length > 0) {
                   if (e.target.files[0].size > 15 * 1024 * 1024) {
                     setFile(e.target.files[0]);
