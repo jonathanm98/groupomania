@@ -30,7 +30,6 @@ const Profil = () => {
     data.append("file", file);
     setImgLoading(true);
     await dispatch(uploadPicture(data, userData.userId));
-    dispatch(getUsers());
     setImgLoading(false);
 
   };
