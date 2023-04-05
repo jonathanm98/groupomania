@@ -37,7 +37,7 @@ export const refreshPosts = (count) => {
       withCredentials: true,
     })
       .then((res) => {
-        if (res.data[0]) dispatch({ type: REFRESH_POSTS, payload: res.data[0] });
+        if (res.data[0]) dispatch({ type: REFRESH_POSTS, payload: res.data });
       })
       .catch((err) => {
         console.log(err);
@@ -72,7 +72,7 @@ export const getLatestPosts = (data) => {
     })
       .then((res) => {
         console.log(res.data);
-        if (res.data) dispatch({ type: GET_LATEST_POST, payload: res.data });
+        if (res.data) dispatch({ type: GET_LATEST_POST, payload: res.data[0] });
       })
       .catch((err) => {
         console.log(err);
