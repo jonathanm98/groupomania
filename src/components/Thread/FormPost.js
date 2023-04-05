@@ -121,7 +121,8 @@ const FormPost = ({ count }) => {
             ></textarea>
             <div className="post-form-buttons">
               <label htmlFor="file-upload">
-                <img src="./img/image.svg" alt="Boutton pour ajouter une image" />
+                {/* eslint-disable-next-line */}
+                <img src="./img/image.svg" alt="Boutton pour ajouter un fichier de type image" />
               </label>
               <input
                 type="file"
@@ -129,8 +130,12 @@ const FormPost = ({ count }) => {
                 id="file-upload"
                 accept=".jpg, .jpeg, .png, .gif, .webp"
                 onChange={(e) => {
-                  if (e.target.files.length > 0) { // Vérifie si un fichier a été sélectionné
-                    console.log(e.target.files[0]);
+                  if (e.target.files.length > 0) {
+                    if (e.target.files[0].size > 15 * 1024 * 1024) {
+                      setFile(e.target.files[0]);
+                      setErrorImg("Le fichier est trop volumineux (15Mo max)");
+                      return;
+                    }
                     setFile(e.target.files[0]);
                     handlePicture(e);
                   } else {
