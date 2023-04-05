@@ -46,7 +46,8 @@ const FormPost = ({ count }) => {
         return (
           !word.includes("https://www.youtube.com/watch?v=") &&
           !word.includes("https://youtube.com/watch?v=") &&
-          !word.includes("https://www.youtube.com/embed/")
+          !word.includes("https://www.youtube.com/embed/") &&
+          !word.includes("https://youtu.be/_")
         );
       });
       return words.join(" ");
@@ -80,6 +81,21 @@ const FormPost = ({ count }) => {
         word.includes("https://youtube.com/watch?v=")
       ) {
         let embed = word.replace("watch?v=", "embed/").split("&")[0];
+        setVideo(embed);
+        findLink.splice(i, 1, embed);
+        setPost(findLink.join(" "));
+        setFile(null);
+        setPreviewPicture("");
+      } else if (word.includes("https://youtu.be/_")) {
+        let embed = word.replace("youtu.be/_", "www.youtube.com/embed/");
+        setVideo(embed);
+        findLink.splice(i, 1, embed);
+        setPost(findLink.join(" "));
+        setFile(null);
+        setPreviewPicture("");
+
+      } else if (word.includes("https://m.youtube.com/watch?v=")) {
+        let embed = word.replace("m.", "").replace("watch?v=", "embed/").split("&")[0];
         setVideo(embed);
         findLink.splice(i, 1, embed);
         setPost(findLink.join(" "));
