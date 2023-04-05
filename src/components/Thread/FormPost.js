@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addPost } from "../../actions/posts.actions";
-import { isEmpty, timestampParser, youtubeData } from "../../Utils";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {addPost} from "../../actions/posts.actions";
+import {isEmpty, timestampParser, youtubeData} from "../../Utils";
 
 const FormPost = () => {
   const dispatch = useDispatch();
@@ -79,10 +79,11 @@ const FormPost = () => {
   const handleVideo = async (videoId) => {
     if (videoId) {
       try {
-        const videoData = await youtubeData(videoId);
-        setVideo(videoData);
+        return await youtubeData(videoId)
       } catch (error) {
         console.error("Error fetching video data:", error);
+        setVideo(null);
+        return new Error(error)
       }
     } else {
       setVideo(null);
@@ -103,7 +104,7 @@ const FormPost = () => {
     const videoId = match ? match[1] : null;
 
     // Call handleVideo with the extracted videoId
-    handleVideo(videoId);
+    setVideo(handleVideo(videoId));
 
     //eslint-disable-next-line
   }, [post, file, video, errorImg]);
