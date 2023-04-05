@@ -4,7 +4,8 @@ const fs = require("fs")
 module.exports.imgProcess = async (req, res, next) => {
     const type = req.file.destination.split("/")[1]
     const size = type === "user" ? 300 : 800
-
+    const ext = `.${req.file.mimetype.split("/")[1]}`
+    console.log(ext);
     if (!req.file) {
         return next();
     }
@@ -24,7 +25,7 @@ module.exports.imgProcess = async (req, res, next) => {
         let sharpImage = sharp(inputPath);
         if (convertToWebp) {
             sharpImage = sharpImage.webp({ quality: 100 });
-            outputPath += '.webp';
+            outputPath.replace(ext, ".webp");
         } else {
             outputPath += `.${imageType.split('/')[1]}`;
         }
