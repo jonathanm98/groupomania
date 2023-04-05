@@ -128,6 +128,7 @@ const FormPost = ({ count }) => {
                 type="file"
                 name="file"
                 id="file-upload"
+                accept=".jpg, .jpeg, .png, .gif, .webp"
                 onChange={(e) => {
                   if (e.target.files.length > 0) { // Vérifie si un fichier a été sélectionné
                     setFile(e.target.files[0]);

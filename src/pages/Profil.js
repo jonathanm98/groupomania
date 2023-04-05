@@ -79,7 +79,7 @@ const Profil = () => {
               id="file"
               className="input-file"
               name="file"
-              accept=".jpg, .jpg, .png"
+              accept=".jpg, .jpeg, .png, .webp"
               required
               onChange={(e) => {
                 setFile(e.target.files[0]);
