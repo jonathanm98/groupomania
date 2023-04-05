@@ -192,7 +192,7 @@ module.exports.deleteUser = async (req, res) => {
 
 // fonction pour editer la photo de l'utilisateur
 module.exports.editUserImg = (req, res) => {
-  const apiUrl = req.protocol + '://' + req.get('host');
+  const apiUrl = 'https://' + req.get('host');
   db.query(
     `SELECT user_picture FROM users WHERE id_user = ${db.escape(
       req.params.id

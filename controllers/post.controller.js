@@ -125,7 +125,7 @@ module.exports.refreshPosts = (req, res) => {
 
 // Fonction de création de post
 module.exports.createPost = (req, res) => {
-  const apiUrl = req.protocol + '://' + req.get('host'); // Récupération de l'URL de l'API
+  const apiUrl = 'https://' + req.get('host'); // Récupération de l'URL de l'API
   // Si on envoie une image avec notre post on la renomme et on envoie tout à la DB
   if (req.file) {
     let img = `${apiUrl}/images/post/${req.file.filename}`;
