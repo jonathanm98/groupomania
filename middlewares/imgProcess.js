@@ -2,6 +2,7 @@ const sharp = require('sharp');
 const fs = require("fs")
 
 module.exports.imgProcess = async (req, res, next) => {
+    if (!req.file) next()
     const type = req.file.destination.split("/")[1]
     const size = type === "user" ? 300 : 800
     const ext = `.${req.file.mimetype.split("/")[1]}`
