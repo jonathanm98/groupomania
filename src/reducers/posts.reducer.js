@@ -16,7 +16,7 @@ export default function postsReducer(state = initialState, action) {
       return action.payload;
     case GET_LATEST_POST:
       console.log(action.payload);
-      return [...action.payload, ...state]
+      return [{ ...action.payload }, ...state]
     case INC_POSTS:
       return state.concat(action.payload);
     case LIKE_POST:
