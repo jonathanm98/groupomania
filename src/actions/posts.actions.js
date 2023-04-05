@@ -58,8 +58,8 @@ export const addPost = (data) => {
       console.log(res.data);
       dispatch({ type: GET_LATEST_POST, payload: res.data });
     }).catch((err) => {
-      window.location.reload();
       console.log(err);
+      window.location.reload();
     });
   };
 };
