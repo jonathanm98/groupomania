@@ -34,7 +34,7 @@ const FormPost = ({ count }) => {
       await dispatch(addPost(data));
       setPostLoading(false);
       // dispatch(refreshPosts(count + 1));
-      await dispatch(getLatestPosts(data));
+      await dispatch(getLatestPosts({ userId: userData.userId }));
 
     } else setError("Vous ne pouvez pas envoyer un post vide !");
   };
