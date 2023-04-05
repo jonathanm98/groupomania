@@ -22,8 +22,8 @@ export const getUser = (uid) => {
 };
 
 export const uploadPicture = (data, id) => {
-  return (dispatch) => {
-    return axios({
+  return async (dispatch) => {
+    return await axios({
       method: "PUT",
       url: `${process.env.REACT_APP_API_URL}/api/user/edit/picture/${id}`,
       withCredentials: true,

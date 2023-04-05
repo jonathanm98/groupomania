@@ -56,6 +56,10 @@
           }
         }
       }
+      .loading {
+        width: 50%;
+        align-self: center;
+      }
     }
     .info-bloc {
       @include bloc-format;
