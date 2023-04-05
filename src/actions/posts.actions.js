@@ -48,36 +48,19 @@ export const refreshPosts = (count) => {
 
 export const addPost = (data) => {
   return async (dispatch) => {
-    try {
-      await axios({
-        method: "POST",
-        url: `${process.env.REACT_APP_API_URL}/api/post/create/post`,
-        withCredentials: true,
-        data,
-      });
-    } catch (err) {
-      window.location.reload();
-      console.log(err);
-    }
-  };
-};
 
-export const getLatestPosts = (data) => {
-  return async (dispatch) => {
-    return await axios({
+    await axios({
       method: "POST",
-      url: `${process.env.REACT_APP_API_URL}/api/post/get/latest`,
+      url: `${process.env.REACT_APP_API_URL}/api/post/create/post`,
       withCredentials: true,
       data,
-    })
-      .then((res) => {
-        console.log(res.data);
-        if (res.data) dispatch({ type: GET_LATEST_POST, payload: res.data });
-      })
-      .catch((err) => {
-        console.log(err);
-        // window.location.reload();
-      });
+    }).then((res) => {
+      console.log(res.data);
+      dispatch({ type: GET_LATEST_POST, payload: res.data });
+    }).catch((err) => {
+      window.location.reload();
+      console.log(err);
+    });
   };
 };
 
