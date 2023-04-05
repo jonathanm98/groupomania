@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import Modal from "react-modal";
 import { updateBio, uploadPicture } from "../actions/user.actions";
-import { getUsers } from "../actions/users.actions";
 import { UidContext } from "../components/AppContext";
 import Header from "../components/Header";
 import { dateParser } from "../Utils";
@@ -23,6 +22,7 @@ const Profil = () => {
   const [file, setFile] = useState();
 
   const [imgLoading, setImgLoading] = useState(false);
+  const [errorImg, setErrorImg] = useState("");
 
   const handlePicture = async (e) => {
     e.preventDefault();
@@ -76,6 +76,7 @@ const Profil = () => {
           }
           <h2>Photo de profil</h2>
           <img id="profil-preview" src={userData.pictureUrl} alt="" />
+          {errorImg && <p className="error-img">{errorImg}</p>}
           <form onSubmit={handlePicture} className="upload-pic">
             <label htmlFor="file" className="label-btn">
               Changer de photo
@@ -89,8 +90,15 @@ const Profil = () => {
               accept=".jpg, .jpeg, .png, .webp"
               required
               onChange={(e) => {
-                setFile(e.target.files[0]);
-                previewPicture(e.target);
+                if (e.target.files.length > 0) {
+                  if (e.target.files[0].size > 15 * 1024 * 1024) {
+                    setFile(e.target.files[0]);
+                    setErrorImg("Le fichier est trop volumineux (15Mo max)");
+                    return;
+                  }
+                  setFile(e.target.files[0]);
+                  previewPicture(e.target);
+                }
               }}
             />
             <br />
