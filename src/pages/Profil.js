@@ -71,11 +71,13 @@ const Profil = () => {
       <h1>Profil de {`${userData.firstName} ${userData.lastName}`}</h1>
       <div className="bloc-profil">
         <div className="img-bloc">
-          {
-            imgLoading && (<img className="loading" src="./img/loading.svg" alt="Animation de chargement" />)
-          }
           <h2>Photo de profil</h2>
-          <img id="profil-preview" src={userData.pictureUrl} alt="" />
+          <div className="img-wrapper">
+            {
+                imgLoading && (<img className="loading" src="./img/loading.svg" alt="Animation de chargement" />)
+            }
+            <img id="profil-preview" src={userData.pictureUrl} alt="" />
+          </div>
           {errorImg && <p className="error-msg">{errorImg}</p>}
           <form onSubmit={handlePicture} className="upload-pic">
             <label htmlFor="file" className="label-btn">

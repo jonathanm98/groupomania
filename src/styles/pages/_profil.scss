@@ -57,12 +57,16 @@
           }
         }
       }
-      .loading {
-        position: absolute;
-        top: 43%;
-        transform: translateY(-50%);
-        width: 100%;
-        box-shadow: none;
+      .img-wrapper {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .loading {
+          position: absolute;
+          width: 100%;
+          box-shadow: none;
+        }
       }
     }
     .info-bloc {
