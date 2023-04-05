@@ -76,7 +76,7 @@ const Profil = () => {
           }
           <h2>Photo de profil</h2>
           <img id="profil-preview" src={userData.pictureUrl} alt="" />
-          {errorImg && <p className="error-img">{errorImg}</p>}
+          {errorImg && <p className="error-msg">{errorImg}</p>}
           <form onSubmit={handlePicture} className="upload-pic">
             <label htmlFor="file" className="label-btn">
               Changer de photo
