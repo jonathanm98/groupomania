@@ -13,8 +13,8 @@ export const ADD_COMMENT = "ADD_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
 
 export const incPosts = (index) => {
-  return (dispatch) => {
-    return axios({
+  return async (dispatch) => {
+    return await axios({
       method: "GET",
       url: `${process.env.REACT_APP_API_URL}/api/post/${index}`,
       withCredentials: true,
@@ -30,8 +30,8 @@ export const incPosts = (index) => {
 };
 
 export const refreshPosts = (count) => {
-  return (dispatch) => {
-    return axios({
+  return async (dispatch) => {
+    return await axios({
       method: "GET",
       url: `${process.env.REACT_APP_API_URL}/api/post/refresh/${count}`,
       withCredentials: true,
@@ -63,8 +63,8 @@ export const addPost = (data) => {
 };
 
 export const getLatestPosts = (data) => {
-  return (dispatch) => {
-    return axios({
+  return async (dispatch) => {
+    return await axios({
       method: "POST",
       url: `${process.env.REACT_APP_API_URL}/api/post/get/latest`,
       withCredentials: true,
@@ -83,8 +83,8 @@ export const getLatestPosts = (data) => {
 
 
 export const likePost = (post, user) => {
-  return (dispatch) => {
-    return axios({
+  return async (dispatch) => {
+    return await axios({
       method: "POST",
       url: `${process.env.REACT_APP_API_URL}/api/post/like/${post}`,
       withCredentials: true,
@@ -110,8 +110,8 @@ export const likePost = (post, user) => {
 };
 
 export const unlikePost = (post, user) => {
-  return (dispatch) => {
-    return axios({
+  return async (dispatch) => {
+    return await axios({
       method: "POST",
       url: `${process.env.REACT_APP_API_URL}/api/post/dislike/${post}`,
       withCredentials: true,
@@ -137,8 +137,8 @@ export const unlikePost = (post, user) => {
 };
 
 export const deletePost = (postId) => {
-  return (dispatch) => {
-    return axios({
+  return async (dispatch) => {
+    return await axios({
       method: "DELETE",
       url: `${process.env.REACT_APP_API_URL}/api/post/delete/post/${postId}`,
       withCredentials: true,

@@ -5,8 +5,8 @@ export const UPLOAD_PICTURE = "UPLOAD_PICTURE";
 export const UPDATE_BIO = "UPDATE_BIO";
 
 export const getUser = (uid) => {
-  return (dispatch) => {
-    return axios({
+  return async (dispatch) => {
+    return await axios({
       method: "GET",
       url: `${process.env.REACT_APP_API_URL}/api/user/get/`,
       withCredentials: true,
@@ -51,8 +51,8 @@ export const uploadPicture = (data, id) => {
 };
 
 export const updateBio = (bio, id) => {
-  return (dispatch) => {
-    return axios({
+  return async (dispatch) => {
+    return await axios({
       method: "PUT",
       url: `${process.env.REACT_APP_API_URL}/api/user/edit/bio/${id}`,
       withCredentials: true,
