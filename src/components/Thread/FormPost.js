@@ -74,42 +74,26 @@ const FormPost = ({ count }) => {
 
   const handleVideo = () => {
     let findLink = post.split(" ");
+
     for (let i = 0; i < findLink.length; i++) {
       const word = findLink[i];
-      if (
-        word.includes("https://www.youtube.com/watch?v=") ||
-        word.includes("https://youtube.com/watch?v=")
-      ) {
-        let embed = word.replace("watch?v=", "embed/").split("&")[0];
-        setVideo(embed);
-        findLink.splice(i, 1, embed);
-        setPost(findLink.join(" "));
-        setFile(null);
-        setPreviewPicture("");
-      } else if (word.includes("https://youtu.be/_")) {
-        let embed = word.replace("youtu.be/_", "www.youtube.com/embed/");
-        setVideo(embed);
-        findLink.splice(i, 1, embed);
-        setPost(findLink.join(" "));
-        setFile(null);
-        setPreviewPicture("");
+      const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/_?|(?:youtube\.com\/(?:embed\/|watch\?v=)))([\w-]{10,12})(?:\S+)?/;
 
-      } else if (word.includes("https://m.youtube.com/watch?v=")) {
-        let embed = word.replace("m.", "").replace("watch?v=", "embed/").split("&")[0];
+      const match = word.match(youtubeRegex);
+
+      if (match) {
+        let embed = `https://www.youtube.com/embed/${match[1]}`;
         setVideo(embed);
         findLink.splice(i, 1, embed);
         setPost(findLink.join(" "));
-        setFile(null);
-        setPreviewPicture("");
-      } else if (word.includes("https://www.youtube.com/embed/")) {
-        setVideo(word);
         setFile(null);
         setPreviewPicture("");
       } else {
         setVideo(null);
       }
     }
-  };
+  }
+
 
   useEffect(() => {
     setError("");
