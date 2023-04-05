@@ -44,18 +44,19 @@ export const refreshPosts = (count) => {
   };
 };
 
-export const addPost = (data) => {
-  return (dispatch) => {
-    return axios({
-      method: "POST",
-      url: `${process.env.REACT_APP_API_URL}/api/post/create/post`,
-      withCredentials: true,
-      data,
-    })
-      .catch((err) => {
-        window.location.reload();
-        console.log(err);
+export const addPost = async (data) => {
+  return async (dispatch) => {
+    try {
+      await axios({
+        method: "POST",
+        url: `${process.env.REACT_APP_API_URL}/api/post/create/post`,
+        withCredentials: true,
+        data,
       });
+    } catch (err) {
+      window.location.reload();
+      console.log(err);
+    }
   };
 };
 
