@@ -7,6 +7,6 @@
 * Utilise les cookies pour rentre persistante l'authentification de l'utilisateur
 * Utilise un 'Lazy Loading' pour charger progressivement les posts de l'utilisateur de manière à optimiser les requètes à l'API
 
-## Acces a l'application fonctionelle : https://jonathanm98-groupomania.netlify.app/
+## Acces a l'application fonctionelle : https://groupomania.jmenelet.fr/
 
 ## Acces au code du backend : https://github.com/jonathanm98/groupomania/tree/backend 
