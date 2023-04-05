@@ -59,6 +59,10 @@
       }
       .loading {
         position: absolute;
+        top: 43%;
+        transform: translateY(-50%);
+        width: 100%;
+        box-shadow: none;
       }
     }
     .info-bloc {
