@@ -5,6 +5,7 @@ import {
   REFRESH_POSTS,
   LIKE_POST,
   UNLIKE_POST,
+  GET_LATEST_POST,
 } from "../actions/posts.actions";
 
 const initialState = [];
@@ -13,6 +14,8 @@ export default function postsReducer(state = initialState, action) {
   switch (action.type) {
     case REFRESH_POSTS:
       return action.payload;
+    case GET_LATEST_POST:
+      return state.concat(action.payload);
     case INC_POSTS:
       return state.concat(action.payload);
     case LIKE_POST:

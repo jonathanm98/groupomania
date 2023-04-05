@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addPost, refreshPosts } from "../../actions/posts.actions";
+import { addPost, refreshPosts, getLatestPosts } from "../../actions/posts.actions";
 import { isEmpty, timestampParser } from "../../Utils";
 
 const FormPost = ({ count }) => {
@@ -33,7 +33,9 @@ const FormPost = ({ count }) => {
       setPostLoading(true);
       await dispatch(addPost(data));
       setPostLoading(false);
-      dispatch(refreshPosts(count + 1));
+      // dispatch(refreshPosts(count + 1));
+      dispatch(getLatestPosts(data));
+
     } else setError("Vous ne pouvez pas envoyer un post vide !");
   };
 

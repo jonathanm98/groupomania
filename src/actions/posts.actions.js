@@ -3,9 +3,11 @@ import axios from "axios";
 export const INC_POSTS = "INC_POSTS";
 export const REFRESH_POSTS = "REFRESH_POSTS";
 export const CREATE_POSTS = "CREATE_POSTS";
+export const GET_LATEST_POST = "GET_LATEST_POST";
+export const DELETE_POST = "DELETE_POST";
+
 export const LIKE_POST = "LIKE_POST";
 export const UNLIKE_POST = "UNLIKE_POST";
-export const DELETE_POST = "DELETE_POST";
 
 export const ADD_COMMENT = "ADD_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
@@ -59,6 +61,26 @@ export const addPost = (data) => {
     }
   };
 };
+
+export const getLatestPosts = (data) => {
+  return (dispatch) => {
+    return axios({
+      method: "POST",
+      url: `${process.env.REACT_APP_API_URL}/api/get/latest`,
+      withCredentials: true,
+      data,
+    })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data[0]) dispatch({ type: GET_LATEST_POST, payload: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+        window.location.reload();
+      });
+  };
+};
+
 
 export const likePost = (post, user) => {
   return (dispatch) => {
