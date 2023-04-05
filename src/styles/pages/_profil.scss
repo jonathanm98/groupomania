@@ -31,6 +31,7 @@
     }
     .img-bloc {
       @include bloc-format;
+      position: relative;
       img {
         aspect-ratio: 1;
         max-width: 200px;
@@ -55,6 +56,11 @@
             transform: scale(1.01);
           }
         }
+      }
+      .loading {
+        position: absolute;
+        width: 50%;
+        align-self: center;
       }
     }
     .info-bloc {

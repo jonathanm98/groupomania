@@ -22,11 +22,15 @@ const Profil = () => {
 
   const [file, setFile] = useState();
 
-  const handlePicture = (e) => {
+  const [imgLoading, setImgLoading] = useState(false);
+
+  const handlePicture = async (e) => {
     e.preventDefault();
     const data = new FormData();
     data.append("file", file);
-    dispatch(uploadPicture(data, userData.userId)).then((e) => console.log(e));
+    setImgLoading(true);
+    await dispatch(uploadPicture(data, userData.userId));
+    setImgLoading(false);
   };
   const handleBio = () => {
     dispatch(updateBio(bio, userData.userId));
@@ -67,6 +71,9 @@ const Profil = () => {
       <h1>Profil de {`${userData.firstName} ${userData.lastName}`}</h1>
       <div className="bloc-profil">
         <div className="img-bloc">
+          {
+            imgLoading && (<img className="loading" src="./img/loading.svg" alt="Animation de chargement" />)
+          }
           <h2>Photo de profil</h2>
           <img id="profil-preview" src={userData.pictureUrl} alt="" />
           <form onSubmit={handlePicture} className="upload-pic">
