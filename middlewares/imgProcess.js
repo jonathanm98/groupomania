@@ -3,7 +3,7 @@ const fs = require("fs")
 
 module.exports.imgProcess = async (req, res, next) => {
     const type = req.file.destination.split("/")[1]
-    const size = type === "user" ? 200 : 700
+    const size = type === "user" ? 300 : 800
 
     if (!req.file) {
         return next();
@@ -18,7 +18,6 @@ module.exports.imgProcess = async (req, res, next) => {
         if (imageType === 'image/png' || imageType === 'image/jpeg' || imageType === 'image/jpg' || imageType === 'image/webp') {
             convertToWebp = true;
         } else if (imageType === 'image/gif') {
-            // Do nothing for GIFs
             return next();
         }
 
@@ -31,13 +30,12 @@ module.exports.imgProcess = async (req, res, next) => {
         }
 
         await sharpImage
-            .resize(size) // Resize the image
+            .rotate()
+            .resize(size)
             .toFile(`images/${type}/${outputPath}`);
 
-        // Update req.file.filename to the new processed image
         req.file.filename = outputPath;
 
-        // Delete the original uploaded file
         fs.unlinkSync(inputPath);
 
         next();

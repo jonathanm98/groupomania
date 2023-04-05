@@ -201,8 +201,8 @@ module.exports.editUserImg = (req, res) => {
       if (err) res.status(500).json(err.sqlMessage);
       else if (data[0]) {
         oldImg = data[0].user_picture.split("/")[5];
-        let img = `http://localhost:4242/images/user/${req.file.filename}`;
-        if (oldImg !== "default.jpg") {
+        let img = `${apiUrl}/images/user/${req.file.filename}`;
+        if (oldImg !== "default.webp") {
           fs.unlink(`./images/user/${oldImg}`, (err) => {
             if (err) console.log(err);
           });
