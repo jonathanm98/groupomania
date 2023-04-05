@@ -66,7 +66,7 @@ export const getLatestPosts = (data) => {
   return (dispatch) => {
     return axios({
       method: "POST",
-      url: `${process.env.REACT_APP_API_URL}/api/get/latest`,
+      url: `${process.env.REACT_APP_API_URL}/api/post/get/latest`,
       withCredentials: true,
       data,
     })
