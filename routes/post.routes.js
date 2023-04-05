@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
     callback(null, name + Date.now() + "." + ext);
   },
 });
-const upload = multer({ fileSize: 10 * 1024 * 1024, storage: storage });
+const upload = multer({ fileSize: 15 * 1024 * 1024, storage: storage });
 
 router.get("/:index/", auth.authUser, postController.incPosts);
 router.get("/refresh/:count", auth.authUser, postController.refreshPosts);

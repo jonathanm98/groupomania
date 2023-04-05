@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
     callback(null, name + Date.now() + "." + ext);
   },
 });
-const upload = multer({ fileSize: 20000000, storage: storage });
+const upload = multer({ fileSize: 15 * 1024 * 1024, storage: storage });
 
 router.post("/login", usersController.login);
 router.post("/register", usersController.register);
