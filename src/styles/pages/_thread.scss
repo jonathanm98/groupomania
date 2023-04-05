@@ -296,9 +296,9 @@
     }
   }
   .video-responsive {
-    overflow: hidden;
-    padding-bottom: 56.25%;
     position: relative;
+    overflow: hidden;
+    margin-top: 15px;
     width: 800px;
     height: 450px;
   }
