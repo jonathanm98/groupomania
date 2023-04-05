@@ -181,12 +181,17 @@ const FormPost = ({ count }) => {
                     {previewPicture && <img src={previewPicture} alt="Prévisualisation de votre fichier"></img>}
                     {errorImg && <h2 className="error-msg">{errorImg}</h2>}
                     {video && (
-                      <iframe
-                        src={video}
-                        title={video}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      ></iframe>
+                      <div className="video-responsive">
+                        <iframe
+                          width="853"
+                          height="480"
+                          src={video}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          title="Embedded youtube"
+                        />
+                      </div>
                     )}
                   </div>
                 </div>
