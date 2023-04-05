@@ -72,7 +72,7 @@ export const getLatestPosts = (data) => {
     })
       .then((res) => {
         console.log(res.data);
-        if (res.data[0]) dispatch({ type: GET_LATEST_POST, payload: res.data });
+        if (res.data) dispatch({ type: GET_LATEST_POST, payload: res.data });
       })
       .catch((err) => {
         console.log(err);
