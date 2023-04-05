@@ -104,7 +104,7 @@ const FormPost = () => {
     const videoId = match ? match[1] : null;
 
     // Call handleVideo with the extracted videoId
-    setVideo(handleVideo(videoId));
+    videoId && setVideo(handleVideo(videoId));
 
     //eslint-disable-next-line
   }, [post, file, video, errorImg]);

@@ -13,9 +13,7 @@ const Card = ({ post, count }) => {
   const [text, setText] = useState(post.content);
   const [video, setVideo] = useState(null);
   const canUpdate = (user, post) => {
-    if (user.userId === post.posterId || user.admin === 1) {
-      return true;
-    } else return false;
+    return user.userId === post.posterId || user.admin === 1;
   };
 
   const handleVideo = () => {
