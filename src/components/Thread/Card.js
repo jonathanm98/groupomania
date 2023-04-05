@@ -81,13 +81,14 @@ const Card = ({ post, count }) => {
                 <p>{text}</p>
                 {!isEmpty(post.img) && <img src={post.img} alt=""></img>}
                 {video && (
-                  <iframe
-                    src={video}
-                    title={video}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
+                  <div className="video-responsive">
+                    <iframe
+                      src={video}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      title="Embedded youtube"
+                    />
+                  </div>
                 )}
               </div>
               <div className="buttons">
