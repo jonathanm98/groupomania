@@ -2,7 +2,6 @@ import axios from "axios";
 
 export const INC_POSTS = "INC_POSTS";
 export const REFRESH_POSTS = "REFRESH_POSTS";
-export const CREATE_POSTS = "CREATE_POSTS";
 export const GET_LATEST_POST = "GET_LATEST_POST";
 export const DELETE_POST = "DELETE_POST";
 
@@ -55,7 +54,6 @@ export const addPost = (data) => {
       withCredentials: true,
       data,
     }).then((res) => {
-      console.log(res.data);
       dispatch({ type: GET_LATEST_POST, payload: res.data });
     }).catch((err) => {
       console.log(err);
@@ -76,7 +74,7 @@ export const likePost = (post, user) => {
         likeValue: 1,
       },
     })
-      .then((res) => {
+      .then(() => {
         dispatch({
           type: LIKE_POST,
           payload: {
@@ -103,7 +101,7 @@ export const unlikePost = (post, user) => {
         likeValue: 1,
       },
     })
-      .then((res) => {
+      .then(() => {
         dispatch({
           type: UNLIKE_POST,
           payload: {
@@ -126,7 +124,7 @@ export const deletePost = (postId) => {
       url: `${process.env.REACT_APP_API_URL}/api/post/delete/post/${postId}`,
       withCredentials: true,
     })
-      .then((res) => {
+      .then(() => {
         dispatch({ type: DELETE_POST, payload: postId });
       })
       .catch((err) => {
@@ -144,7 +142,7 @@ export const addComment = (postId, commenterId, content) => {
       withCredentials: true,
       data: { postId, commenterId, content },
     })
-      .then((res) =>
+      .then(() =>
         dispatch({
           type: ADD_COMMENT,
           payload: { postId, commenterId, content },
@@ -160,7 +158,7 @@ export const deleteComment = (postId, commentId) => {
       method: "DELETE",
       url: `${process.env.REACT_APP_API_URL}/api/post/delete/comment/${commentId}`,
       withCredentials: true,
-    }).then((res) =>
+    }).then(() =>
       dispatch({ type: DELETE_COMMENT, payload: { postId, commentId } })
     );
   };

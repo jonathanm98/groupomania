@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addPost } from "../../actions/posts.actions";
-import { isEmpty, timestampParser } from "../../Utils";
+import { isEmpty, timestampParser, youtubeData } from "../../Utils";
 
-const FormPost = ({ count }) => {
+const FormPost = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const userData = useSelector((state) => state.userReducer);
@@ -13,6 +13,7 @@ const FormPost = ({ count }) => {
 
   const [file, setFile] = useState(null);
   const [video, setVideo] = useState(null);
+  const [videoId, setVideoId] = useState(null);
   const [post, setPost] = useState("");
   const [error, setError] = useState("");
   const [previewPicture, setPreviewPicture] = useState("");
@@ -21,6 +22,7 @@ const FormPost = ({ count }) => {
   const [postloading, setPostLoading] = useState(false);
 
   const handlePost = async (e) => {
+
     e.preventDefault();
     if (post || file) {
       const data = new FormData();
@@ -65,6 +67,7 @@ const FormPost = ({ count }) => {
       setPreviewPicture(URL.createObjectURL(e.target.files[0]));
       setFile(e.target.files[0]);
       setVideo(null);
+      setVideoId(null);
       setPost("");
     } else {
       setFile(null);
@@ -73,38 +76,38 @@ const FormPost = ({ count }) => {
     }
   };
 
-  const handleVideo = () => {
-    let findLink = post.split(" ");
-
-    for (let i = 0; i < findLink.length; i++) {
-      const word = findLink[i];
-      const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/_?|(?:youtube\.com\/(?:embed\/|watch\?v=)))([\w-]{10,12})(?:\S+)?/;
-
-      const match = word.match(youtubeRegex);
-
-      if (match) {
-        let embed = `https://www.youtube.com/embed/${match[1]}`;
-        setVideo(embed);
-        findLink.splice(i, 1, embed);
-        setPost(findLink.join(" "));
-        setFile(null);
-        setPreviewPicture("");
-      } else {
-        setVideo(null);
+  const handleVideo = async (videoId) => {
+    if (videoId) {
+      try {
+        const videoData = await youtubeData(videoId);
+        setVideo(videoData);
+      } catch (error) {
+        console.error("Error fetching video data:", error);
       }
+    } else {
+      setVideo(null);
     }
-  }
+  };
 
   useEffect(() => {
     setError("");
-    handleVideo();
     if (post.length > 0 || file || errorImg) {
       setPreview(true);
     } else {
       setPreview(false);
     }
+
+    // Extract videoId from the post content
+    const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/_?|(?:youtube\.com\/(?:embed\/|watch\?v=)))([\w-]{10,12})(?:\S+)?/;
+    const match = post.match(youtubeRegex);
+    const videoId = match ? match[1] : null;
+
+    // Call handleVideo with the extracted videoId
+    handleVideo(videoId);
+
     //eslint-disable-next-line
   }, [post, file, video, errorImg]);
+
 
   return (
     <div className="post-form-container">
@@ -155,6 +158,7 @@ const FormPost = ({ count }) => {
                       setPost("");
                       setPreviewPicture("");
                       setVideo(null);
+                      setVideoId(null);
                       setErrorImg("");
                     }}
                     className="reset"
@@ -181,13 +185,13 @@ const FormPost = ({ count }) => {
                     {previewPicture && <img src={previewPicture} alt="Prévisualisation de votre fichier"></img>}
                     {errorImg && <h2 className="error-msg">{errorImg}</h2>}
                     {video && (
-                      <div className="video-responsive">
-                        <iframe
-                          src={video}
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          title="Embedded youtube"
-                        />
+                      <div className="video-container" >
+                        <a href={`https://www.youtube.com/watch?v=${videoId}`}>
+                          <img src={video.thumbnails.standard.url} alt={`Liens vers la video : ${video.title}`} />
+                          <div className="video-meta">
+                            <h3>{video.title}</h3>
+                          </div>
+                        </a>
                       </div>
                     )}
                   </div>

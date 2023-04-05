@@ -51,7 +51,7 @@ const Profil = () => {
       url: `${process.env.REACT_APP_API_URL}/api/user/logout`,
       withCredentials: true,
     })
-      .then((res) => (window.location.reload()))
+      .then(() => (window.location.reload()))
       .catch((err) => console.log(err));
   };
   const handleDelete = () => {
@@ -61,7 +61,7 @@ const Profil = () => {
       url: `${process.env.REACT_APP_API_URL}/api/user/delete/${userData.userId}`,
       withCredentials: true,
     })
-      .then((res) => (window.location.reload()))
+      .then(() => (window.location.reload()))
       .catch((err) => console.log(err));
   };
   return (
@@ -126,7 +126,6 @@ const Profil = () => {
               {updateForm && (
                 <>
                   <textarea
-                    type="text"
                     defaultValue={userData.bio}
                     onChange={(e) => setBio(e.target.value)}
                   ></textarea>
