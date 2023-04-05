@@ -32,7 +32,7 @@ const FormPost = ({ count }) => {
       setPreviewPicture("");
       setPostLoading(true);
       await dispatch(addPost(data));
-      // setPostLoading(false);
+      setPostLoading(false);
       dispatch(refreshPosts(count + 1));
     } else setError("Vous ne pouvez pas envoyer un post vide !");
   };
