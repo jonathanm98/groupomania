@@ -94,7 +94,6 @@ const FormPost = ({ count }) => {
     }
   }
 
-
   useEffect(() => {
     setError("");
     handleVideo();
