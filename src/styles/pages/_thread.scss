@@ -299,8 +299,7 @@
     position: relative;
     overflow: hidden;
     margin-top: 15px;
-    width: 800px;
-    height: 450px;
+    max-width: 90%;
   }
 
   .video-responsive iframe {
