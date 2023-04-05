@@ -8,6 +8,6 @@
 * Permet de créer ou éditer des posts/commentaires en utilisant des middleware d'authentifications
 * Permet à un utilisateur avec des droits administrateur de modérer le contenu du site
 
-## Acces a l'application fonctionelle : https://jonathanm98-groupomania.netlify.app/
+## Acces a l'application fonctionelle : https://groupomania.jmenelet.fr/
 
 ## Acces au code du frontend : https://github.com/jonathanm98/groupomania/tree/frontend
