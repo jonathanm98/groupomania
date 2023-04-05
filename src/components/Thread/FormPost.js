@@ -130,6 +130,7 @@ const FormPost = ({ count }) => {
                 accept=".jpg, .jpeg, .png, .gif, .webp"
                 onChange={(e) => {
                   if (e.target.files.length > 0) { // Vérifie si un fichier a été sélectionné
+                    console.log(e.target.files[0]);
                     setFile(e.target.files[0]);
                     handlePicture(e);
                   } else {
