@@ -35,7 +35,7 @@ const Card = ({ post, count }) => {
 
   useEffect(() => {
     !isEmpty(usersData[0]) && setIsLoading(false);
-  });
+  }, [usersData]);
   useEffect(() => {
     handleVideo();
     //eslint-disable-next-line
