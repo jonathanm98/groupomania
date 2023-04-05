@@ -55,6 +55,9 @@ const Card = ({ post, count }) => {
                   usersData
                     .map((user) => {
                       if (user.userId === post.posterId) {
+                        if (user.userId === userData.userId) {
+                          return userData.pictureUrl;
+                        }
                         return user.pictureUrl;
                       }
                     })
