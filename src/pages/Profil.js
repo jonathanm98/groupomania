@@ -126,7 +126,6 @@ const Profil = () => {
               {updateForm && (
                 <>
                   <textarea
-                    type="text"
                     defaultValue={userData.bio}
                     onChange={(e) => setBio(e.target.value)}
                   ></textarea>

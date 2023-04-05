@@ -55,7 +55,6 @@ export const addPost = (data) => {
       withCredentials: true,
       data,
     }).then((res) => {
-      console.log(res.data);
       dispatch({ type: GET_LATEST_POST, payload: res.data });
     }).catch((err) => {
       console.log(err);

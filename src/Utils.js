@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const isEmpty = (value) => {
   return (
     value === undefined ||
@@ -40,4 +42,21 @@ export const timestampParser = (num) => {
     .replace(",", " à ");
 
   return date.toString();
+};
+
+export const youtubeData = async (videoId) => {
+  try {
+    const response = await axios.get(
+      `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`
+    );
+
+    if (response.data.items.length > 0) {
+      return response.data.items[0].snippet;
+    } else {
+      throw new Error('Video not found');
+    }
+  } catch (error) {
+    console.error('Error fetching video title:', error);
+    return null;
+  }
 };
