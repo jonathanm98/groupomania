@@ -50,6 +50,7 @@ const Thread = () => {
       <FormPost count={postCount} />
       {!isEmpty(posts[0]) ? (
         posts.map((post) => {
+          console.log(post);
           return <Card post={post} count={postCount} key={post.postId} />;
         })
       ) : (

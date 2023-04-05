@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addPost, refreshPosts, getLatestPosts } from "../../actions/posts.actions";
+import { addPost, getLatestPosts } from "../../actions/posts.actions";
 import { isEmpty, timestampParser } from "../../Utils";
 
 const FormPost = ({ count }) => {
