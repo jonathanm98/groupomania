@@ -15,7 +15,7 @@ export default function postsReducer(state = initialState, action) {
     case REFRESH_POSTS:
       return action.payload;
     case GET_LATEST_POST:
-      return [...action.payload[0], ...state]
+      return [...action.payload, ...state]
     case INC_POSTS:
       return state.concat(action.payload);
     case LIKE_POST:
