@@ -18,7 +18,7 @@ const FormPost = ({ count }) => {
   const [previewPicture, setPreviewPicture] = useState("");
   const [errorImg, setErrorImg] = useState("");
   const [preview, setPreview] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [postloading, setPostLoading] = useState(false);
 
   const handlePost = async (e) => {
     e.preventDefault();
@@ -27,9 +27,9 @@ const FormPost = ({ count }) => {
       data.append("posterId", userData.userId);
       data.append("content", post);
       if (file) data.append("file", file);
-      setLoading(true);
+      setPostLoading(true);
       await dispatch(addPost(data));
-      setLoading(false);
+      setPostLoading(false);
       dispatch(refreshPosts(count + 1));
       setFile(null);
       setPost("");
@@ -108,7 +108,7 @@ const FormPost = ({ count }) => {
 
   return (
     <div className="post-form-container">
-      {loading ? (
+      {isLoading ? (
         <img className="loading" src="./img/loading.svg" alt="" />
       ) : (
         <>
@@ -192,7 +192,7 @@ const FormPost = ({ count }) => {
                 </div>
               </div>
             )}
-            {isLoading &&
+            {postloading &&
               <img className="loading" src="./img/loading.svg" alt="Animation de chargement" />}
           </form>
         </>
