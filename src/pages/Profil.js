@@ -30,7 +30,9 @@ const Profil = () => {
     data.append("file", file);
     setImgLoading(true);
     await dispatch(uploadPicture(data, userData.userId));
+    dispatch(getUsers());
     setImgLoading(false);
+
   };
   const handleBio = () => {
     dispatch(updateBio(bio, userData.userId));
@@ -42,7 +44,6 @@ const Profil = () => {
 
     if (picture) {
       image.src = URL.createObjectURL(picture);
-      dispatch(getUsers(0));
     }
   };
   const disconnect = () => {
