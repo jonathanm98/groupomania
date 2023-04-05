@@ -44,7 +44,7 @@ export const refreshPosts = (count) => {
   };
 };
 
-export const addPost = async (data) => {
+export const addPost = (data) => {
   return async (dispatch) => {
     try {
       await axios({
