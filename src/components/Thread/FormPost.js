@@ -27,13 +27,13 @@ const FormPost = ({ count }) => {
       data.append("posterId", userData.userId);
       data.append("content", post);
       if (file) data.append("file", file);
+      setFile(null);
+      setPost("");
+      setPreviewPicture("");
       setPostLoading(true);
       await dispatch(addPost(data));
       setPostLoading(false);
       dispatch(refreshPosts(count + 1));
-      setFile(null);
-      setPost("");
-      setPreviewPicture("");
     } else setError("Vous ne pouvez pas envoyer un post vide !");
   };
 
