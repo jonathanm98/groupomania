@@ -68,7 +68,6 @@ const FormPost = () => {
       setFile(e.target.files[0]);
       setVideo(null);
       setVideoId(null);
-      setPost("");
     } else {
       setFile(null);
       setErrorImg("Vous devez mettre une image valide !");
