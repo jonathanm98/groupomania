@@ -30,7 +30,7 @@ const Profil = () => {
     data.append("file", file);
     setImgLoading(true);
     await dispatch(uploadPicture(data, userData.userId));
-    setImgLoading(false);
+    // setImgLoading(false);
   };
   const handleBio = () => {
     dispatch(updateBio(bio, userData.userId));
