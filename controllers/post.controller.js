@@ -157,7 +157,22 @@ module.exports.createPost = (req, res) => {
   `,
       (err, data) => {
         if (err) res.status(500).json(err.sqlMessage);
-        else res.status(201).send("Post créer");
+        else db.query(
+          `SELECT id_post AS postId, 
+          id_user AS posterId, 
+          post_content AS content, 
+          post_img AS img, 
+          post_createdAt AS createdAt 
+          FROM posts WHERE id_user = ${db.escape(req.body.posterId)} 
+          ORDER BY id_post DESC LIMIT 1`,
+          (err, data) => {
+            if (err) res.status(500).json(err);
+            console.log(data);
+            data[0].comments = [];
+            data[0].likes = 0;
+            data[0].usersLiked = [];
+            res.status(200).json(data[0])
+          })
       }
     );
   }
