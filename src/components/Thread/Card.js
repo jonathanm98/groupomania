@@ -19,7 +19,7 @@ const Card = ({ post, count }) => {
   };
 
   const handleVideo = () => {
-    let findLink = post.content.split(" ");
+    let findLink = post.content?.split(" ");
     for (let i = 0; i < findLink.length; i++) {
       const word = findLink[i];
       if (
