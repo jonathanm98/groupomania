@@ -37,7 +37,7 @@ export const refreshPosts = (count) => {
       withCredentials: true,
     })
       .then((res) => {
-        if (res.data[0]) dispatch({ type: REFRESH_POSTS, payload: res.data });
+        if (res.data[0]) dispatch({ type: REFRESH_POSTS, payload: res.data[0] });
       })
       .catch((err) => {
         console.log(err);
