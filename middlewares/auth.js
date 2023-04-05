@@ -32,7 +32,7 @@ module.exports.auth = async (req, res, next) => {
   }
 };
 
-// Fonction middleware qui vérifie que l'utilisateur est authenthifié et passe à la suite du programme
+// Middleware qui vérifie que l'utilisateur est toujours authenthifié a chaque requette et passe à la suite du programme
 module.exports.authUser = async (req, res, next) => {
   try {
     if (req.cookies.jwt) {
@@ -61,8 +61,7 @@ module.exports.authUser = async (req, res, next) => {
   }
 };
 
-// Foncction qui vérifie que l'utilisateur qui fais la requete est bien authorisé à modifier
-// le post/commentaire ciblé ou si il est l'administrateur
+// Foncction qui vérifie que l'utilisateur qui fais la requete est bien authorisé à modifier le post/commentaire ciblé ou si il est l'administrateur
 module.exports.authDeleteContent = async (req, res, next) => {
   try {
     const token = req.cookies.jwt;
