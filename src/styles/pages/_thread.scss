@@ -301,13 +301,15 @@
     margin-top: 15px;
     width: 90%;
     padding-bottom: calc(90% * 9 / 16);
+    box-shadow: $blue 0px 0px 10px 1px;
   }
 
   .video-responsive iframe {
+    position: absolute;
     left: 0;
     top: 0;
     height: 100%;
     width: 100%;
-    position: absolute;
+    border: none;
   }
 }
