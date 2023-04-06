@@ -19,9 +19,6 @@ const CommentCard = ({ post, count }) => {
   const handleComment = async (e) => {
     e.preventDefault();
     if (text) {
-      if (text.length > 800) {
-       return setSubmitError("Votre commentaire est trop long (800 caractères max)");
-      }
       }
       dispatch(addComment(post.postId, uid, text));
       setText("");
@@ -97,7 +94,13 @@ const CommentCard = ({ post, count }) => {
         <input
           type="text"
           name="text"
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => {
+            setSubmitError("")
+            if (text.length > 800) {
+              return setSubmitError("Votre commentaire est trop long (800 caractères max)");
+            }
+            setText(e.target.value)
+          }}
           value={text}
           placeholder="Laisser un commentaire"
         />
