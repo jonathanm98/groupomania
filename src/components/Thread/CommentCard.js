@@ -10,6 +10,7 @@ import { UidContext } from "../AppContext";
 
 const CommentCard = ({ post, count }) => {
   const [text, setText] = useState("");
+  const [submitError, setSubmitError] = useState(null);
   const usersData = useSelector((state) => state.usersReducer);
   const userData = useSelector((state) => state.userReducer);
   const uid = useContext(UidContext);
@@ -18,13 +19,18 @@ const CommentCard = ({ post, count }) => {
   const handleComment = async (e) => {
     e.preventDefault();
     if (text) {
+      if (text.length > 800) {
+       return setSubmitError("Votre commentaire est trop long (800 caractères max)");
+      }
+      }
       dispatch(addComment(post.postId, uid, text));
       setText("");
       setTimeout(() => {
         dispatch(refreshPosts(count));
       }, 200);
     }
-  };
+
+
 
   const handleDelete = (commentId) => {
     dispatch(deleteComment(post.postId, commentId));
@@ -96,6 +102,7 @@ const CommentCard = ({ post, count }) => {
           placeholder="Laisser un commentaire"
         />
         <br />
+          <h2 className="error-msg">{submitError}</h2>
         <input type="submit" value="Envoyer" />
       </form>
     </div>

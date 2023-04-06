@@ -17,7 +17,7 @@ const FormPost = () => {
   const [post, setPost] = useState("");
   const [error, setError] = useState("");
   const [previewPicture, setPreviewPicture] = useState("");
-  const [errorImg, setErrorImg] = useState("");
+  const [postError, setPostError] = useState("");
   const [preview, setPreview] = useState(false);
   const [postloading, setPostLoading] = useState(false);
 
@@ -63,14 +63,14 @@ const FormPost = () => {
       e.target.files[0]?.name.split(".")[fileNameLength] === "gif" ||
       e.target.files[0]?.name.split(".")[fileNameLength] === "webp"
     ) {
-      setErrorImg("");
+      setPostError("");
       setPreviewPicture(URL.createObjectURL(e.target.files[0]));
       setFile(e.target.files[0]);
       setVideo(null);
       setVideoId(null);
     } else {
       setFile(null);
-      setErrorImg("Vous devez mettre une image valide !");
+      setPostError("Vous devez mettre une image valide !");
       setPreviewPicture(removeVideoLink(post));
     }
   };
@@ -91,7 +91,7 @@ const FormPost = () => {
 
   useEffect(() => {
     setError("");
-    if (post.length > 0 || file || errorImg) {
+    if (post.length > 0 || file || postError) {
       setPreview(true);
     } else {
       setPreview(false);
@@ -106,7 +106,7 @@ const FormPost = () => {
     videoId && setVideo(handleVideo(videoId));
 
     //eslint-disable-next-line
-  }, [post, file, video, errorImg]);
+  }, [post, file, video, postError]);
 
 
   return (
@@ -121,7 +121,13 @@ const FormPost = () => {
               id="message"
               placeholder="Écrivez un message ..."
               value={post}
-              onChange={(e) => setPost(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value.length > 1600) {
+                    setPostError("Votre message est trop long (1600 caractères max)");
+                    return;
+                }
+                setPost(e.target.value)
+              }}
             ></textarea>
             <div className="post-form-buttons">
               <label htmlFor="file-upload">
@@ -137,7 +143,7 @@ const FormPost = () => {
                   if (e.target.files.length > 0) {
                     if (e.target.files[0].size > 15 * 1024 * 1024) {
                       setFile(e.target.files[0]);
-                      setErrorImg("Le fichier est trop volumineux (15Mo max)");
+                      setPostError("Le fichier est trop volumineux (15Mo max)");
                       return;
                     }
                     setFile(e.target.files[0]);
@@ -145,7 +151,7 @@ const FormPost = () => {
                   } else {
                     setFile(null);
                     setPreviewPicture("");
-                    setErrorImg("");
+                    setPostError("");
                   }
                 }}
               />
@@ -159,7 +165,7 @@ const FormPost = () => {
                       setPreviewPicture("");
                       setVideo(null);
                       setVideoId(null);
-                      setErrorImg("");
+                      setPostError("");
                     }}
                     className="reset"
                   >
@@ -183,11 +189,11 @@ const FormPost = () => {
                   <div className="post">
                     <p>{post}</p>
                     {previewPicture && <img src={previewPicture} alt="Prévisualisation de votre fichier"></img>}
-                    {errorImg && <h2 className="error-msg">{errorImg}</h2>}
+                    {postError && <h2 className="error-msg">{postError}</h2>}
                     {video && (
                       <div className="video-container" >
                         <a href={`https://www.youtube.com/watch?v=${videoId}`}>
-                          <img src={video.thumbnails.standard.url} alt={`Liens vers la video : ${video.title}`} />
+                          <img src={video.postError.standard.url} alt={`Liens vers la video : ${video.title}`} />
                           <div className="video-meta">
                             <h3>{video.title}</h3>
                           </div>
