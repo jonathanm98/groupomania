@@ -122,6 +122,7 @@ const FormPost = () => {
               placeholder="Écrivez un message ..."
               value={post}
               onChange={(e) => {
+                setPostError("");
                 if (e.target.value.length > 1600) {
                     setPostError("Votre message est trop long (1600 caractères max)");
                     return;
