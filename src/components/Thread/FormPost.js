@@ -188,7 +188,7 @@ const FormPost = () => {
                     <p>{timestampParser(Date.now())}</p>
                   </div>
                   <div className="post">
-                    <p style={{wordBreak: "break-word"}}>{post}</p>
+                    <p>{post}</p>
                     {previewPicture && <img src={previewPicture} alt="Prévisualisation de votre fichier"></img>}
                     {postError && <h2 className="error-msg">{postError}</h2>}
                     {video && (
