@@ -96,7 +96,7 @@ const CommentCard = ({ post, count }) => {
           name="text"
           onChange={(e) => {
             setSubmitError("")
-            if (text.length > 800) {
+            if (e.target.value.length > 800) {
               return setSubmitError("Votre commentaire est trop long (800 caractères max)");
             }
             setText(e.target.value)
