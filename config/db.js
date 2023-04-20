@@ -1,12 +1,13 @@
-require("dotenv").config({ path: "./.env" });
-const mysql = require("mysql");
+const { MongoClient, ServerApiVersion } = require("mongodb");
+require("dotenv").config()
 
-const con = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: "groupomania",
-  multipleStatements: true,
+// Replace the placeholder with your Atlas connection string
+const uri = process.env.MONGODB_URI;
+
+module.exports = new MongoClient(uri, {
+    serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+    }
 });
-
-module.exports = con;
