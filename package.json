@@ -9,7 +9,7 @@
     "start": "nodemon server"
   },
   "dependencies": {
-    "bcrypt": "^5.0.1",
+    "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
@@ -17,13 +17,14 @@
     "express-xss-sanitizer": "^1.1.1",
     "formidable": "^3.2.1",
     "https": "^1.0.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
+    "mongodb": "^5.3.0",
+    "mongoose": "^7.0.4",
     "multer": "^1.4.4",
     "mysql": "^2.18.1",
     "node-mysql": "^0.4.2",
     "nodemon": "^2.0.15",
     "sharp": "^0.32.0",
-    "sharp": "^0.32.0",
-    "validator": "^13.7.0"
+    "validator": "^13.9.0"
   }
 }

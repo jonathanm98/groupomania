@@ -1,9 +1,9 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
-const usersRoutes = require("./routes/users.routes");
+const usersRoutes = require("./routes/user.routes");
 const postRoutes = require("./routes/post.routes");
 require("dotenv").config({ path: "./.env" });
-const db = require("./config/db");
+require("./config/db");
 const cors = require("cors");
 const { xss } = require("express-xss-sanitizer");
 
@@ -18,8 +18,8 @@ const app = express();
 app.use(requestLogger);
 
 const corsOptions = {
-  //origin: "http://localhost:3000",
-  origin: process.env.CLIENT_URL,
+  origin: "http://localhost:3000",
+  // origin: process.env.CLIENT_URL,
   credentials: true,
   allowedHeaders: ["sessionId", "Content-Type"],
   exposedHeaders: ["sessionId"],
@@ -29,8 +29,8 @@ const corsOptions = {
 };
 const addCorsHeaders = (req, res, next) => {
   // Autoriser l'accès depuis l'application front
-  //res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-  res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  // res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL);
 
   // Autoriser l'utilisation des cookies avec les requêtes
   res.header("Access-Control-Allow-Credentials", true);
@@ -56,11 +56,6 @@ app.use(express.urlencoded({extended: true }));
 app.use(cookieParser());
 
 app.use(xss());
-
-db.connect(function (err) {
-  if (err) throw err;
-  console.log("Base de données initialisée");
-});
 
 app.use("/api/user", usersRoutes);
 app.use("/api/post", postRoutes);

@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const postController = require("../controllers/post.controller");
-const auth = require("../middlewares/auth");
+const {auth, authDeleteContent} = require("../middlewares/auth");
 const multer = require("multer");
 const { imgProcess } = require("../middlewares/imgProcess")
 
@@ -24,31 +24,30 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ fileSize: 15 * 1024 * 1024, storage: storage });
 
-router.get("/:index/", auth.authUser, postController.incPosts);
-router.get("/refresh/:count", auth.authUser, postController.refreshPosts);
+router.get("/:index/", auth, postController.incPosts);
+router.get("/refresh/:count", auth, postController.refreshPosts);
 
 router.post(
   "/create/post",
-  auth.authUser,
+    auth,
   upload.single("file"),
   imgProcess,
   postController.createPost,
-
 );
 router.delete(
   "/delete/post/:id",
-  auth.authDeleteContent,
+  authDeleteContent,
   postController.deletePost
 );
 
-router.post("/create/comment", auth.authUser, postController.createComment);
+router.post("/create/comment", auth, postController.createComment);
 router.delete(
   "/delete/comment/:id",
-  auth.authDeleteContent,
+  authDeleteContent,
   postController.deleteComment
 );
 
-router.post("/like/:id", auth.authUser, postController.like);
-router.post("/dislike/:id", auth.authUser, postController.like);
+router.post("/like/:id", auth, postController.like);
+router.post("/dislike/:id", auth, postController.like);
 
 module.exports = router;

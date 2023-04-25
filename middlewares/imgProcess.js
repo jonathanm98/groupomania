@@ -17,7 +17,7 @@ module.exports.imgProcess = async (req, res, next) => {
     // Nom original du fichier
     const inputPath = req.file.path;
     // Nom du fichier traité
-    const outputPath = `p-${req.file.filename}`;
+    let outputPath = `p-${req.file.filename}`;
 
     try {
         const imageType = req.file.mimetype;
