@@ -22,11 +22,11 @@ const FormPost = () => {
   const [postloading, setPostLoading] = useState(false);
 
   const handlePost = async (e) => {
-
+    console.log(userData)
     e.preventDefault();
     if (post || file) {
       const data = new FormData();
-      data.append("posterId", userData.userId);
+      data.append("posterId", userData._id);
       data.append("content", post);
       if (file) data.append("file", file);
       setFile(null);

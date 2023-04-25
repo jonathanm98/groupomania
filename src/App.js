@@ -18,7 +18,7 @@ function App() {
         withCredentials: true,
       })
         .then((res) => {
-          setUid(res.data.id);
+          setUid(res.data.auth);
         })
         .catch((err) => console.log("Navigation non authentifiée"));
     };

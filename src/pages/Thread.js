@@ -28,6 +28,7 @@ const Thread = () => {
   };
 
   useEffect(() => {
+    console.log(uid)
     if (loadPosts) {
       dispatch(incPosts(postCount));
       setLoadPosts(false);

@@ -53,7 +53,7 @@ const LoginForm = () => {
         },
       })
         .then(() => {
-          window.location.reload()
+          window.location = "/thread";
         })
         .catch((err) => {
           if (err.response.data.credentials) {

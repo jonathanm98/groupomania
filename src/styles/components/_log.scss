@@ -1,7 +1,6 @@
 .auth-container {
   display: flex;
   flex-direction: column;
-  margin-top: 100px;
   align-items: center;
   width: fit-content;
   margin: 20px auto;
@@ -38,7 +37,6 @@
         }
       }
       label {
-        margin-left: 12px;
         margin: 8px 0;
       }
       .password-input {
@@ -52,6 +50,7 @@
           border-radius: 0 10px 10px 0;
           transform: translateY(-50%);
           cursor: pointer;
+          fill: #091f43;
         }
       }
       input[type="submit"] {
