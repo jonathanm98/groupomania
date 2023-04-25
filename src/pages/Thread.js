@@ -28,7 +28,6 @@ const Thread = () => {
   };
 
   useEffect(() => {
-    console.log(uid)
     if (loadPosts) {
       dispatch(incPosts(postCount));
       setLoadPosts(false);
@@ -51,7 +50,7 @@ const Thread = () => {
       <FormPost count={postCount} />
       {!isEmpty(posts[0]) ? (
         posts.map((post) => {
-          return <Card post={post} count={postCount} key={post.postId} />;
+          return <Card post={post} count={postCount} key={post._id} />;
         })
       ) : (
         <h2 className="empty-msg">Aucun post</h2>

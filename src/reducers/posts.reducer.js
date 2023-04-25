@@ -14,38 +14,42 @@ export default function postsReducer(state = initialState, action) {
   switch (action.type) {
     case REFRESH_POSTS:
       return action.payload;
+
     case GET_LATEST_POST:
       return [{ ...action.payload }, ...state]
+
     case INC_POSTS:
       return state.concat(action.payload);
+
     case LIKE_POST:
       return state.map((post) => {
-        if (post.postId === action.payload.postId) {
+        if (post._id === action.payload.postId) {
+          console.log("like" + post)
           return {
             ...post,
-            usersLiked: post.usersLiked.concat(action.payload.userId),
-            likes: post.likes + 1,
-            ...post.likes,
+            likes: post.likes.concat(action.payload.userId),
           };
         }
         return post;
       });
+
     case UNLIKE_POST:
       return state.map((post) => {
-        if (post.postId === action.payload.postId) {
+        if (post._id === action.payload.postId) {
+          console.log("unlike " + post)
           return {
             ...post,
-            usersLiked: post.usersLiked.filter(
+            likes: post.likes.filter(
               (id) => id !== action.payload.userId
             ),
-            likes: post.likes - 1,
-            ...post.likes,
           };
         }
         return post;
       });
+
     case DELETE_POST:
       return state.filter((post) => post.postId !== action.payload);
+
     case DELETE_COMMENT:
       return state.map((post) => {
         if (post.postId === action.payload.postId) {
