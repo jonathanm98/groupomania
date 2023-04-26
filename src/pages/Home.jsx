@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import Header from "../components/Header";
-import Log from "../components/Log";
-import { UidContext } from "../components/AppContext";
+import Header from "../components/Header/index.jsx";
+import Log from "../components/Log/index.jsx";
+import { UidContext } from "../components/AppContext.jsx";
 import { Navigate } from "react-router-dom";
 
 const Home = () => {

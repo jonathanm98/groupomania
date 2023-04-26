@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {dateParser, isEmpty} from "../../Utils";
-import CommentCard from "./CommentCard";
-import DeleteButton from "./DeleteButton";
-import LikeButton from "./LikeButton";
+import CommentCard from "./CommentCard.jsx";
+import DeleteButton from "./DeleteButton.jsx";
+import LikeButton from "./LikeButton.jsx";
 
 const Card = ({post, count}) => {
     const [isLoading, setIsLoading] = useState(true);

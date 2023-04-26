@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { UidContext } from "../AppContext";
-import ProfilCard from "./ProfilCard";
+import { UidContext } from "../AppContext.jsx";
+import ProfilCard from "./ProfilCard.jsx";
 
 const Header = () => {
   const uid = useContext(UidContext);

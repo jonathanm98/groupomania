@@ -47,7 +47,7 @@ export const timestampParser = (num) => {
 export const youtubeData = async (videoId) => {
   try {
     const response = await axios.get(
-      `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`
+      `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=snippet&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`
     );
 
     if (response.data.items.length > 0) {

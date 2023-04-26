@@ -8,7 +8,7 @@ export const getUser = (uid) => {
   return async (dispatch) => {
     return await axios({
       method: "GET",
-      url: `${process.env.REACT_APP_API_URL}/api/user/get/`,
+      url: `${import.meta.env.VITE_API_URL}/api/user/get/`,
       withCredentials: true,
     })
       .then((res) => {
@@ -25,14 +25,14 @@ export const uploadPicture = (data, id) => {
   return async (dispatch) => {
     return await axios({
       method: "PUT",
-      url: `${process.env.REACT_APP_API_URL}/api/user/edit/picture/${id}`,
+      url: `${import.meta.env.VITE_API_URL}/api/user/edit/picture/${id}`,
       withCredentials: true,
       data: data,
     })
       .then((res) => {
         return axios({
           method: "GET",
-          url: `${process.env.REACT_APP_API_URL}/api/user/get/`,
+          url: `${import.meta.env.VITE_API_URL}/api/user/get/`,
           withCredentials: true,
         })
           .then((res) =>
@@ -54,7 +54,7 @@ export const updateBio = (bio, id) => {
   return async (dispatch) => {
     return await axios({
       method: "PUT",
-      url: `${process.env.REACT_APP_API_URL}/api/user/edit/bio/${id}`,
+      url: `${import.meta.env.VITE_API_URL}/api/user/edit/bio/${id}`,
       withCredentials: true,
       data: { bio },
     })

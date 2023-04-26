@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import Modal from "react-modal";
 import { updateBio, uploadPicture } from "../actions/user.actions";
-import { UidContext } from "../components/AppContext";
-import Header from "../components/Header";
+import { UidContext } from "../components/AppContext.jsx";
+import Header from "../components/Header/index.jsx";
 import { dateParser } from "../Utils";
 
 const Profil = () => {
@@ -48,7 +48,7 @@ const Profil = () => {
   const disconnect = () => {
     axios({
       method: "GET",
-      url: `${process.env.REACT_APP_API_URL}/api/user/logout`,
+      url: `${import.meta.env.VITE_API_URL}/api/user/logout`,
       withCredentials: true,
     })
       .then(() => (window.location.reload()))
@@ -58,7 +58,7 @@ const Profil = () => {
     setDeleteModal(false);
     axios({
       method: "DELETE",
-      url: `${process.env.REACT_APP_API_URL}/api/user/delete/${userData.userId}`,
+      url: `${import.meta.env.VITE_API_URL}/api/user/delete/${userData.userId}`,
       withCredentials: true,
     })
       .then(() => (window.location.reload()))

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { UidContext } from "./components/AppContext";
-import Routers from "./Routers";
+import { UidContext } from "./components/AppContext.jsx";
+import Routers from "./Routers.jsx";
 import { useDispatch } from "react-redux";
 import { getUser } from "./actions/user.actions";
 import { getUsers } from "./actions/users.actions";
@@ -14,7 +14,7 @@ function App() {
     const getAuth = () => {
       axios({
         method: "GET",
-        url: `${process.env.REACT_APP_API_URL}/api/user/auth`,
+        url: `${import.meta.env.VITE_API_URL}/api/user/auth`,
         withCredentials: true,
       })
         .then((res) => {

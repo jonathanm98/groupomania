@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import Profil from "./pages/Profil";
-import Thread from "./pages/Thread";
+import Home from "./pages/Home.jsx";
+import Profil from "./pages/Profil.jsx";
+import Thread from "./pages/Thread.jsx";
 
 const Routers = () => {
   return (

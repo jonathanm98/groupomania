@@ -15,7 +15,7 @@ export const incPosts = (index) => {
   return async (dispatch) => {
     return await axios({
       method: "GET",
-      url: `${process.env.REACT_APP_API_URL}/api/post/${index}`,
+      url: `${import.meta.env.VITE_API_URL}/api/post/${index}`,
       withCredentials: true,
     })
       .then((res) => {
@@ -32,7 +32,7 @@ export const refreshPosts = (count) => {
   return async (dispatch) => {
     return await axios({
       method: "GET",
-      url: `${process.env.REACT_APP_API_URL}/api/post/refresh/${count}`,
+      url: `${import.meta.env.VITE_API_URL}/api/post/refresh/${count}`,
       withCredentials: true,
     })
       .then((res) => {
@@ -50,7 +50,7 @@ export const addPost = (data) => {
 
     await axios({
       method: "POST",
-      url: `${process.env.REACT_APP_API_URL}/api/post/create/post`,
+      url: `${import.meta.env.VITE_API_URL}/api/post/create/post`,
       withCredentials: true,
       data,
     }).then((res) => {
@@ -67,7 +67,7 @@ export const likePost = (post, user) => {
   return async (dispatch) => {
     return await axios({
       method: "POST",
-      url: `${process.env.REACT_APP_API_URL}/api/post/like/${post}`,
+      url: `${import.meta.env.VITE_API_URL}/api/post/like/${post}`,
       withCredentials: true,
       data: {
         userId: user,
@@ -94,7 +94,7 @@ export const unlikePost = (post, user) => {
   return async (dispatch) => {
     return await axios({
       method: "POST",
-      url: `${process.env.REACT_APP_API_URL}/api/post/dislike/${post}`,
+      url: `${import.meta.env.VITE_API_URL}/api/post/dislike/${post}`,
       withCredentials: true,
       data: {
         userId: user,
@@ -121,7 +121,7 @@ export const deletePost = (postId) => {
   return async (dispatch) => {
     return await axios({
       method: "DELETE",
-      url: `${process.env.REACT_APP_API_URL}/api/post/delete/post/${postId}`,
+      url: `${import.meta.env.VITE_API_URL}/api/post/delete/post/${postId}`,
       withCredentials: true,
     })
       .then(() => {
@@ -138,7 +138,7 @@ export const addComment = (postId, commenterId, content) => {
   return (dispatch) => {
     axios({
       method: "POST",
-      url: `${process.env.REACT_APP_API_URL}/api/post/create/comment`,
+      url: `${import.meta.env.VITE_API_URL}/api/post/create/comment`,
       withCredentials: true,
       data: { postId, commenterId, content },
     })
@@ -156,7 +156,7 @@ export const deleteComment = (postId, commentId) => {
   return (dispatch) => {
     axios({
       method: "DELETE",
-      url: `${process.env.REACT_APP_API_URL}/api/post/delete/comment/${commentId}`,
+      url: `${import.meta.env.VITE_API_URL}/api/post/delete/comment/${commentId}`,
       withCredentials: true,
     }).then(() =>
       dispatch({ type: DELETE_COMMENT, payload: { postId, commentId } })

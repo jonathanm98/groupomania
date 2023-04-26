@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { incPosts, refreshPosts } from "../actions/posts.actions";
-import { UidContext } from "../components/AppContext";
-import Header from "../components/Header";
-import Card from "../components/Thread/Card";
-import FormPost from "../components/Thread/FormPost";
+import { UidContext } from "../components/AppContext.jsx";
+import Header from "../components/Header/index.jsx";
+import Card from "../components/Thread/Card.jsx";
+import FormPost from "../components/Thread/FormPost.jsx";
 import { isEmpty } from "../Utils";
 
 const Thread = () => {

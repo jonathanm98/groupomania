@@ -6,7 +6,7 @@ import {
   refreshPosts,
 } from "../../actions/posts.actions";
 import { dateParser, isEmpty } from "../../Utils";
-import { UidContext } from "../AppContext";
+import { UidContext } from "../AppContext.jsx";
 
 const CommentCard = ({ post, count }) => {
   const [text, setText] = useState("");
